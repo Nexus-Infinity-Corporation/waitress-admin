@@ -12,16 +12,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { ThemeSwitcher } from "@/components/theme/theme-switcher"
 
 export function HeaderClient() {
   return (
     <div className="flex h-16 items-center justify-between px-6">
       {/* Logo */}
       <div className="flex items-center gap-3">
-        <div className="flex h-8 w-8 items-center justify-center rounded bg-white text-black font-bold text-lg">
+        <div className="flex h-8 w-8 items-center justify-center rounded bg-primary text-primary-foreground font-bold text-lg">
           A
         </div>
-        <span className="text-xl font-bold text-white">Amdash</span>
+        <span className="text-xl font-bold">Amdash</span>
       </div>
 
       {/* Search */}
@@ -36,11 +37,13 @@ export function HeaderClient() {
         </div>
       </div>
 
-      {/* Right Actions */}
-      <div className="flex items-center gap-2">
-        <Button variant="ghost" size="icon">
-          <Grid className="h-5 w-5" />
-        </Button>
+        {/* Right Actions */}
+        <div className="flex items-center gap-2">
+          <ThemeSwitcher />
+          
+          <Button variant="ghost" size="icon">
+            <Grid className="h-5 w-5" />
+          </Button>
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
