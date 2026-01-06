@@ -1,0 +1,78 @@
+{
+  "common": {
+    "search": "Search...",
+    "notifications": "Notifications",
+    "viewAll": "View All",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout",
+    "language": "Language",
+    "english": "English",
+    "spanish": "Spanish"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "totalEmployees": "Total Employees",
+    "activeClients": "Active Clients",
+    "totalProducts": "Total Products",
+    "lowStockItems": "Low Stock Items",
+    "activeStaffMembers": "Active staff members",
+    "restaurantClients": "Restaurant clients",
+    "menuItems": "Menu items",
+    "needRestocking": "Need restocking",
+    "recentOrders": "Recent Orders",
+    "totalRevenue": "Total Revenue",
+    "monthlyOrders": "Monthly Orders",
+    "quickActions": "Quick Actions",
+    "addNewEmployee": "Add new employee",
+    "registerNewClient": "Register new client",
+    "addProductToMenu": "Add product to menu",
+    "restockWarehouse": "Restock warehouse"
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "orders": "Orders",
+    "products": "Products",
+    "clients": "Clients",
+    "employees": "Employees",
+    "warehouse": "Warehouse",
+    "ecommerce": "E-commerce"
+  },
+  "header": {
+    "myAccount": "My Account",
+    "myCart": "My Cart",
+    "items": "Items",
+    "checkout": "Checkout",
+    "total": "Total"
+  },
+  "notifications": {
+    "newOrders": "New Orders",
+    "newOrdersMessage": "You have received new orders",
+    "accountCreated": "Account Created",
+    "accountCreatedMessage": "Successfully created new email",
+    "newProductApproved": "New Product Approved",
+    "newProductApprovedMessage": "Your new product has approved",
+    "viewAllNotifications": "View All Notifications"
+  },
+  "pages": {
+    "orders": {
+      "title": "Orders"
+    },
+    "products": {
+      "title": "Products"
+    },
+    "clients": {
+      "title": "Clients"
+    },
+    "employees": {
+      "title": "Employees"
+    },
+    "warehouse": {
+      "title": "Warehouse"
+    },
+    "ecommerce": {
+      "title": "E-commerce"
+    }
+  }
+}
+

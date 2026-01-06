@@ -1,0 +1,78 @@
+{
+  "common": {
+    "search": "Buscar...",
+    "notifications": "Notificaciones",
+    "viewAll": "Ver todo",
+    "profile": "Perfil",
+    "settings": "Configuración",
+    "logout": "Cerrar sesión",
+    "language": "Idioma",
+    "english": "Inglés",
+    "spanish": "Español"
+  },
+  "dashboard": {
+    "title": "Panel de control",
+    "totalEmployees": "Total de Empleados",
+    "activeClients": "Clientes Activos",
+    "totalProducts": "Total de Productos",
+    "lowStockItems": "Artículos con Bajo Stock",
+    "activeStaffMembers": "Miembros del personal activos",
+    "restaurantClients": "Clientes del restaurante",
+    "menuItems": "Elementos del menú",
+    "needRestocking": "Necesitan reabastecimiento",
+    "recentOrders": "Pedidos Recientes",
+    "totalRevenue": "Ingresos Totales",
+    "monthlyOrders": "Pedidos Mensuales",
+    "quickActions": "Acciones Rápidas",
+    "addNewEmployee": "Agregar nuevo empleado",
+    "registerNewClient": "Registrar nuevo cliente",
+    "addProductToMenu": "Agregar producto al menú",
+    "restockWarehouse": "Reabastecer almacén"
+  },
+  "navigation": {
+    "dashboard": "Panel de control",
+    "orders": "Pedidos",
+    "products": "Productos",
+    "clients": "Clientes",
+    "employees": "Empleados",
+    "warehouse": "Almacén",
+    "ecommerce": "Comercio electrónico"
+  },
+  "header": {
+    "myAccount": "Mi Cuenta",
+    "myCart": "Mi Carrito",
+    "items": "Artículos",
+    "checkout": "Pagar",
+    "total": "Total"
+  },
+  "notifications": {
+    "newOrders": "Nuevos Pedidos",
+    "newOrdersMessage": "Has recibido nuevos pedidos",
+    "accountCreated": "Cuenta Creada",
+    "accountCreatedMessage": "Correo electrónico creado exitosamente",
+    "newProductApproved": "Nuevo Producto Aprobado",
+    "newProductApprovedMessage": "Tu nuevo producto ha sido aprobado",
+    "viewAllNotifications": "Ver Todas las Notificaciones"
+  },
+  "pages": {
+    "orders": {
+      "title": "Pedidos"
+    },
+    "products": {
+      "title": "Productos"
+    },
+    "clients": {
+      "title": "Clientes"
+    },
+    "employees": {
+      "title": "Empleados"
+    },
+    "warehouse": {
+      "title": "Almacén"
+    },
+    "ecommerce": {
+      "title": "Comercio electrónico"
+    }
+  }
+}
+

@@ -13,8 +13,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { ThemeSwitcher } from "@/components/theme/theme-switcher"
+import { LanguageSwitcher } from "@/components/dashboard/language-switcher"
+import { useTranslations } from 'next-intl'
 
 export function HeaderClient() {
+  const t = useTranslations('common')
+  const tHeader = useTranslations('header')
+
   return (
     <div className="flex h-16 items-center justify-between px-6">
       {/* Logo */}
@@ -31,7 +36,7 @@ export function HeaderClient() {
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <input
             type="search"
-            placeholder="Type to search..."
+            placeholder={t('search')}
             className="w-full rounded-lg border border-input bg-background pl-10 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
           />
         </div>
@@ -39,6 +44,7 @@ export function HeaderClient() {
 
         {/* Right Actions */}
         <div className="flex items-center gap-2">
+          <LanguageSwitcher />
           <ThemeSwitcher />
           
           <Button variant="ghost" size="icon">
@@ -55,7 +61,7 @@ export function HeaderClient() {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-80">
-            <DropdownMenuLabel>Notifications</DropdownMenuLabel>
+            <DropdownMenuLabel>{t('notifications')}</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <div className="max-h-96 overflow-y-auto">
               {[1, 2, 3].map((i) => (
@@ -110,11 +116,11 @@ export function HeaderClient() {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuLabel>{tHeader('myAccount')}</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Settings</DropdownMenuItem>
-            <DropdownMenuItem>Logout</DropdownMenuItem>
+            <DropdownMenuItem>{t('profile')}</DropdownMenuItem>
+            <DropdownMenuItem>{t('settings')}</DropdownMenuItem>
+            <DropdownMenuItem>{t('logout')}</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
