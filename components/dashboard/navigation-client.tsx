@@ -12,6 +12,10 @@ import {
   FileText,
   FileCheck,
   Grid,
+  Users,
+  Building2,
+  Package,
+  Warehouse,
   type LucideIcon,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -27,6 +31,10 @@ const iconMap: Record<string, LucideIcon> = {
   FileText,
   FileCheck,
   Grid,
+  Users,
+  Building2,
+  Package,
+  Warehouse,
 }
 
 interface NavigationClientProps {

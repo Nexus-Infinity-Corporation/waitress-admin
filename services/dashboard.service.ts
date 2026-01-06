@@ -7,6 +7,11 @@ import type {
   SocialTrafficData,
   BrowserStatsData,
 } from "@/types/dashboard"
+import type { RestaurantMetrics } from "@/types/restaurant"
+import { getEmployees } from "./employees.service"
+import { getClients } from "./clients.service"
+import { getProducts } from "./products.service"
+import { getLowStockItems } from "./warehouse.service"
 
 export async function getMetrics(): Promise<MetricData[]> {
   // In a real app, this would fetch from an API
@@ -36,6 +41,22 @@ export async function getMetrics(): Promise<MetricData[]> {
       gradient: "purple",
     },
   ]
+}
+
+export async function getRestaurantMetrics(): Promise<RestaurantMetrics> {
+  const employees = await getEmployees()
+  const clients = await getClients()
+  const products = await getProducts()
+  const lowStockItems = await getLowStockItems()
+
+  return {
+    totalEmployees: employees.length,
+    activeClients: clients.filter((c) => c.status === "Active").length,
+    totalProducts: products.length,
+    lowStockItems: lowStockItems.length,
+    totalRevenue: "$45,230",
+    monthlyOrders: 342,
+  }
 }
 
 export async function getOrders(): Promise<Order[]> {
@@ -146,4 +167,3 @@ export async function getBrowserStatsData(): Promise<BrowserStatsData[]> {
     { name: "Edge", percentage: 10, color: "bg-blue-600" },
   ]
 }
-
