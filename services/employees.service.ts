@@ -1,5 +1,6 @@
 import type { Employee } from "@/types/restaurant";
 import supabase from "./api.service";
+import { User } from "@supabase/supabase-js";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -82,6 +83,52 @@ export async function signInWithEmail(email: string, password: string) {
   const { data, error } = await supabase.auth.signInWithPassword({
     email: email,
     password: password,
+  });
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data;
+}
+
+export async function updatePassword(password: string) {
+  const { data, error } = await supabase.auth.updateUser({
+    password: password,
+  });
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data;
+}
+
+export async function resetPasswordForEmail(email: string) {
+  const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: `${baseUrl}/reset-password`,
+  });
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data;
+}
+
+export async function signOut() {
+  const { error } = await supabase.auth.signOut();
+  if (error) {
+    throw new Error(error.message);
+  }
+  return true;
+}
+
+export async function getUser() {
+  const { data, error } = await supabase.auth.getUser();
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data;
+}
+
+export async function updateUser(user: User) {
+  const { data, error } = await supabase.auth.updateUser({
+    data: user,
   });
   if (error) {
     throw new Error(error.message);
