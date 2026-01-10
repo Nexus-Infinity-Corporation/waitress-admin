@@ -1,6 +1,7 @@
 "use server";
 
 import type { LoginState } from "@/app/[locale]/login/types/login";
+import { signInWithEmail } from "@/services/employees.service";
 
 export async function loginAction(
   prevState: LoginState | undefined,
@@ -28,6 +29,15 @@ export async function loginAction(
   // If there are validation errors, return them
   if (Object.keys(errors).length > 0) {
     return { errors };
+  }
+
+  const user = await signInWithEmail(email, password);
+  if (!user) {
+    return {
+      errors: {
+        _form: ["Invalid email or password"],
+      },
+    };
   }
 
   // TODO: Implement actual authentication logic here

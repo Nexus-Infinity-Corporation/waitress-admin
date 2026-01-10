@@ -1,5 +1,9 @@
 "use client";
+/* eslint-disable react-hooks/set-state-in-effect */
+// This rule is disabled because we need to detect client-side mounting
+// to prevent hydration mismatches with Radix UI components
 
+import { useLayoutEffect, useState } from "react";
 import { useLocale } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/routing";
 import {
@@ -17,10 +21,24 @@ export function LanguageSwitcher() {
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
+  const [mounted, setMounted] = useState(false);
+
+  // This pattern is necessary to prevent hydration mismatches with Radix UI
+  useLayoutEffect(() => {
+    setMounted(true);
+  }, []);
 
   const switchLocale = (newLocale: string) => {
     router.replace(pathname, { locale: newLocale });
   };
+
+  if (!mounted) {
+    return (
+      <Button variant="ghost" size="icon">
+        <Globe className="h-5 w-5" />
+      </Button>
+    );
+  }
 
   return (
     <DropdownMenu>
