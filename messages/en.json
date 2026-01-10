@@ -73,6 +73,18 @@
     "ecommerce": {
       "title": "E-commerce"
     }
+  },
+  "login": {
+    "title": "Welcome Back",
+    "description": "Enter your credentials to access your account",
+    "emailLabel": "Email",
+    "emailPlaceholder": "name@example.com",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "submitButton": "Sign In",
+    "loggingIn": "Signing in...",
+    "forgotPassword": "Forgot your password?"
   }
 }
-

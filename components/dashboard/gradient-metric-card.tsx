@@ -1,10 +1,10 @@
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { cn } from "@/lib/utils"
-import { LucideIcon } from "lucide-react"
-import type { MetricData } from "@/types/dashboard"
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+import { LucideIcon } from "lucide-react";
+import type { MetricData } from "@/types/dashboard";
 
 interface GradientMetricCardProps extends MetricData {
-  icon: LucideIcon
+  icon: LucideIcon;
 }
 
 const gradientClasses = {
@@ -12,7 +12,7 @@ const gradientClasses = {
   red: "from-red-500 to-rose-600",
   blue: "from-blue-500 to-cyan-600",
   purple: "from-purple-500 to-violet-600",
-}
+};
 
 export function GradientMetricCard({
   title,
@@ -41,5 +41,5 @@ export function GradientMetricCard({
         </CardContent>
       </div>
     </Card>
-  )
+  );
 }

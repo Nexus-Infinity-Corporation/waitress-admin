@@ -1,9 +1,9 @@
-import { HorizontalHeader } from "@/components/dashboard/horizontal-header"
-import { ProductsTable } from "@/components/dashboard/products-table"
-import { getProducts } from "@/services/products.service"
+import { HorizontalHeader } from "@/components/dashboard/horizontal-header";
+import { ProductsTable } from "@/components/dashboard/products-table";
+import { getProducts } from "@/services/products.service";
 
 export default async function ProductsPage() {
-  const products = await getProducts()
+  const products = await getProducts();
 
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-background">
@@ -14,6 +14,5 @@ export default async function ProductsPage() {
         </div>
       </main>
     </div>
-  )
+  );
 }
-

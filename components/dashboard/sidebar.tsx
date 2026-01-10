@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   ShoppingCart,
@@ -17,20 +17,9 @@ import {
   Clock,
   HelpCircle,
   DollarSign,
-  Settings,
-  LogOut,
-  ChevronDown,
   ChevronRight,
-} from "lucide-react"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const menuItems = [
   {
@@ -48,7 +37,7 @@ const menuItems = [
     icon: BarChart3,
     href: "/analytics",
   },
-]
+];
 
 const appsItems = [
   {
@@ -81,7 +70,7 @@ const appsItems = [
     icon: FileText,
     href: "/invoice",
   },
-]
+];
 
 const pagesItems = [
   {
@@ -114,10 +103,10 @@ const pagesItems = [
     icon: DollarSign,
     href: "/pricing",
   },
-]
+];
 
 export function Sidebar() {
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   return (
     <div className="hidden lg:flex h-screen w-64 flex-col border-r bg-card">
@@ -135,8 +124,8 @@ export function Sidebar() {
       <nav className="flex-1 overflow-y-auto p-4">
         <div className="space-y-1">
           {menuItems.map((item) => {
-            const Icon = item.icon
-            const isActive = pathname === item.href
+            const Icon = item.icon;
+            const isActive = pathname === item.href;
             return (
               <Link
                 key={item.href}
@@ -151,7 +140,7 @@ export function Sidebar() {
                 <Icon className="h-5 w-5" />
                 {item.title}
               </Link>
-            )
+            );
           })}
         </div>
 
@@ -161,8 +150,8 @@ export function Sidebar() {
           </p>
           <div className="space-y-1">
             {appsItems.map((item) => {
-              const Icon = item.icon
-              const isActive = pathname === item.href
+              const Icon = item.icon;
+              const isActive = pathname === item.href;
               return (
                 <Link
                   key={item.href}
@@ -177,7 +166,7 @@ export function Sidebar() {
                   <Icon className="h-5 w-5" />
                   {item.title}
                 </Link>
-              )
+              );
             })}
           </div>
         </div>
@@ -188,7 +177,7 @@ export function Sidebar() {
           </p>
           <div className="space-y-1">
             {pagesItems.map((item) => {
-              const Icon = item.icon
+              const Icon = item.icon;
               if (item.children) {
                 return (
                   <div key={item.title} className="space-y-1">
@@ -214,9 +203,9 @@ export function Sidebar() {
                       ))}
                     </div>
                   </div>
-                )
+                );
               }
-              const isActive = pathname === item.href
+              const isActive = pathname === item.href;
               return (
                 <Link
                   key={item.href}
@@ -231,12 +220,11 @@ export function Sidebar() {
                   <Icon className="h-5 w-5" />
                   {item.title}
                 </Link>
-              )
+              );
             })}
           </div>
         </div>
       </nav>
     </div>
-  )
+  );
 }
-

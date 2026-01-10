@@ -1,9 +1,12 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { getCountriesData } from "@/services/dashboard.service"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getCountriesData } from "@/services/dashboard.service";
 
 export async function CountryList() {
-  const countries = await getCountriesData()
-  const totalVisits = countries.reduce((sum, country) => sum + country.visits, 0)
+  const countries = await getCountriesData();
+  const totalVisits = countries.reduce(
+    (sum, country) => sum + country.visits,
+    0
+  );
 
   return (
     <Card>
@@ -16,7 +19,10 @@ export async function CountryList() {
       <CardContent>
         <div className="space-y-4">
           {countries.map((country, index) => (
-            <div key={country.name} className="flex items-center justify-between">
+            <div
+              key={country.name}
+              className="flex items-center justify-between"
+            >
               <div className="flex items-center gap-3">
                 <span className="text-sm font-medium text-muted-foreground">
                   {index + 1}.
@@ -29,5 +35,5 @@ export async function CountryList() {
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }

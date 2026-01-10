@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import { DataTable, type ColumnDef } from "./data-table"
-import { Badge } from "@/components/ui/badge"
-import type { Product } from "@/types/restaurant"
+import { DataTable, type ColumnDef } from "./data-table";
+import { Badge } from "@/components/ui/badge";
+import type { Product } from "@/types/restaurant";
 
 interface ProductsTableProps {
-  data: Product[]
+  data: Product[];
 }
 
 export function ProductsTable({ data }: ProductsTableProps) {
@@ -27,9 +27,7 @@ export function ProductsTable({ data }: ProductsTableProps) {
     {
       key: "price",
       header: "Price",
-      render: (product) => (
-        <span className="font-medium">{product.price}</span>
-      ),
+      render: (product) => <span className="font-medium">{product.price}</span>,
     },
     {
       key: "cost",
@@ -44,15 +42,15 @@ export function ProductsTable({ data }: ProductsTableProps) {
             product.status === "Available"
               ? "success"
               : product.status === "Out of Stock"
-              ? "warning"
-              : "destructive"
+                ? "warning"
+                : "destructive"
           }
         >
           {product.status}
         </Badge>
       ),
     },
-  ]
+  ];
 
   return (
     <DataTable
@@ -65,6 +63,5 @@ export function ProductsTable({ data }: ProductsTableProps) {
       onEdit={(product) => console.log("Edit", product)}
       onDelete={(product) => console.log("Delete", product)}
     />
-  )
+  );
 }
-

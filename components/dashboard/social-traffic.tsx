@@ -1,9 +1,9 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { getSocialTrafficData } from "@/services/dashboard.service"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getSocialTrafficData } from "@/services/dashboard.service";
 
 export async function SocialTraffic() {
-  const socialData = await getSocialTrafficData()
-  const totalVisits = socialData.reduce((sum, item) => sum + item.visits, 0)
+  const socialData = await getSocialTrafficData();
+  const totalVisits = socialData.reduce((sum, item) => sum + item.visits, 0);
 
   return (
     <Card>
@@ -36,5 +36,5 @@ export async function SocialTraffic() {
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }

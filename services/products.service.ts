@@ -1,4 +1,4 @@
-import type { Product } from "@/types/restaurant"
+import type { Product } from "@/types/restaurant";
 
 export async function getProducts(): Promise<Product[]> {
   // In a real app, this would fetch from an API
@@ -63,16 +63,17 @@ export async function getProducts(): Promise<Product[]> {
       sku: "BUR-BEE-001",
       status: "Available",
     },
-  ]
+  ];
 }
 
 export async function getProductById(id: string): Promise<Product | null> {
-  const products = await getProducts()
-  return products.find((product) => product.id === id) || null
+  const products = await getProducts();
+  return products.find((product) => product.id === id) || null;
 }
 
-export async function getProductsByCategory(category: string): Promise<Product[]> {
-  const products = await getProducts()
-  return products.filter((product) => product.category === category)
+export async function getProductsByCategory(
+  category: string
+): Promise<Product[]> {
+  const products = await getProducts();
+  return products.filter((product) => product.category === category);
 }
-

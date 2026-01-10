@@ -1,9 +1,9 @@
-import { HorizontalHeader } from "@/components/dashboard/horizontal-header"
-import { EmployeesTable } from "@/components/dashboard/employees-table"
-import { getEmployees } from "@/services/employees.service"
+import { HorizontalHeader } from "@/components/dashboard/horizontal-header";
+import { EmployeesTable } from "@/components/dashboard/employees-table";
+import { getEmployees } from "@/services/employees.service";
 
 export default async function EmployeesPage() {
-  const employees = await getEmployees()
+  const employees = await getEmployees();
 
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-background">
@@ -14,5 +14,5 @@ export default async function EmployeesPage() {
         </div>
       </main>
     </div>
-  )
+  );
 }

@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "../globals.css";
+import "@/app/globals.css";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { StoreProvider } from "@/providers/store-provider";
-import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
-import { notFound } from 'next/navigation';
-import { routing } from '@/i18n/routing';
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { notFound } from "next/navigation";
+import { routing } from "@/i18n/routing";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,7 +20,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Dashtrans - Admin Dashboard",
-  description: "Modern admin dashboard built with Next.js, Tailwind CSS, and shadcn/ui",
+  description:
+    "Modern admin dashboard built with Next.js, Tailwind CSS, and shadcn/ui",
 };
 
 export default async function LocaleLayout({
@@ -31,9 +32,9 @@ export default async function LocaleLayout({
   params: Promise<{ locale: string }>;
 }>) {
   const { locale } = await params;
-  
+
   // Ensure that the incoming `locale` is valid
-  if (!routing.locales.includes(locale as any)) {
+  if (!routing.locales.includes(locale as (typeof routing.locales)[number])) {
     notFound();
   }
 
@@ -60,4 +61,3 @@ export default async function LocaleLayout({
     </html>
   );
 }
-

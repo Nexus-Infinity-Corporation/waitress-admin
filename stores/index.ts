@@ -4,5 +4,4 @@ export {
   type UIState,
   type UIActions,
   defaultUIState,
-} from "./ui-store"
-
+} from "./ui-store";

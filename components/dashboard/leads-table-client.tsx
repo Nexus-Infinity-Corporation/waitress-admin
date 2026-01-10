@@ -1,26 +1,26 @@
-"use client"
+"use client";
 
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
-import type { Order } from "@/types/dashboard"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import type { Order } from "@/types/dashboard";
 
 interface LeadsTableClientProps {
-  leads: Order[]
+  leads: Order[];
 }
 
 function getStatusVariant(status: string) {
   switch (status) {
     case "Completed":
     case "FULFILLED":
-      return "success"
+      return "success";
     case "In Progress":
     case "CONFIRMED":
-      return "default"
+      return "default";
     case "Cancelled":
     case "PARTIALLY SHIPPED":
-      return "warning"
+      return "warning";
     default:
-      return "outline"
+      return "outline";
   }
 }
 
@@ -48,7 +48,7 @@ export function LeadsTableClient({ leads }: LeadsTableClientProps) {
           </tr>
         </thead>
         <tbody>
-          {leads.map((lead, index) => (
+          {leads.map((lead) => (
             <tr key={lead.id} className="border-b hover:bg-muted/50">
               <td className="px-4 py-3">
                 <div className="flex items-center gap-3">
@@ -59,7 +59,9 @@ export function LeadsTableClient({ leads }: LeadsTableClientProps) {
                   </Avatar>
                   <div>
                     <p className="text-sm font-medium">{lead.company}</p>
-                    <p className="text-xs text-muted-foreground">Lead Designers</p>
+                    <p className="text-xs text-muted-foreground">
+                      Lead Designers
+                    </p>
                   </div>
                 </div>
               </td>
@@ -75,8 +77,8 @@ export function LeadsTableClient({ leads }: LeadsTableClientProps) {
                         lead.status === "FULFILLED"
                           ? 100
                           : lead.status === "CONFIRMED"
-                          ? 60
-                          : 0
+                            ? 60
+                            : 0
                       }%`,
                     }}
                   />
@@ -107,6 +109,5 @@ export function LeadsTableClient({ leads }: LeadsTableClientProps) {
         </tbody>
       </table>
     </div>
-  )
+  );
 }
-

@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import { DataTable, type ColumnDef } from "./data-table"
-import { Badge } from "@/components/ui/badge"
-import type { RestaurantClient } from "@/types/restaurant"
+import { DataTable, type ColumnDef } from "./data-table";
+import { Badge } from "@/components/ui/badge";
+import type { RestaurantClient } from "@/types/restaurant";
 
 interface ClientsTableProps {
-  data: RestaurantClient[]
+  data: RestaurantClient[];
 }
 
 export function ClientsTable({ data }: ClientsTableProps) {
@@ -47,8 +47,8 @@ export function ClientsTable({ data }: ClientsTableProps) {
             client.status === "Active"
               ? "success"
               : client.status === "Suspended"
-              ? "warning"
-              : "destructive"
+                ? "warning"
+                : "destructive"
           }
         >
           {client.status}
@@ -63,7 +63,7 @@ export function ClientsTable({ data }: ClientsTableProps) {
       key: "totalSpent",
       header: "Total Spent",
     },
-  ]
+  ];
 
   return (
     <DataTable
@@ -76,6 +76,5 @@ export function ClientsTable({ data }: ClientsTableProps) {
       onEdit={(client) => console.log("Edit", client)}
       onDelete={(client) => console.log("Delete", client)}
     />
-  )
+  );
 }
-

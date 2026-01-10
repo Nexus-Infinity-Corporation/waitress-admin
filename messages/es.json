@@ -73,6 +73,18 @@
     "ecommerce": {
       "title": "Comercio electrónico"
     }
+  },
+  "login": {
+    "title": "Bienvenido de Nuevo",
+    "description": "Ingresa tus credenciales para acceder a tu cuenta",
+    "emailLabel": "Correo Electrónico",
+    "emailPlaceholder": "nombre@ejemplo.com",
+    "passwordLabel": "Contraseña",
+    "passwordPlaceholder": "Ingresa tu contraseña",
+    "showPassword": "Mostrar contraseña",
+    "hidePassword": "Ocultar contraseña",
+    "submitButton": "Iniciar Sesión",
+    "loggingIn": "Iniciando sesión...",
+    "forgotPassword": "¿Olvidaste tu contraseña?"
   }
 }
-

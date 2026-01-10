@@ -1,4 +1,7 @@
-import type { Employee } from "@/types/restaurant"
+import type { Employee } from "@/types/restaurant";
+import supabase from "./api.service";
+
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 export async function getEmployees(): Promise<Employee[]> {
   // In a real app, this would fetch from an API
@@ -53,11 +56,35 @@ export async function getEmployees(): Promise<Employee[]> {
       hireDate: "2022-08-15",
       salary: "$2,500",
     },
-  ]
+  ];
 }
 
 export async function getEmployeeById(id: string): Promise<Employee | null> {
-  const employees = await getEmployees()
-  return employees.find((emp) => emp.id === id) || null
+  const employees = await getEmployees();
+  return employees.find((emp) => emp.id === id) || null;
 }
 
+export async function signUpNewUser(email: string, password: string) {
+  const { data, error } = await supabase.auth.signUp({
+    email: email,
+    password: password,
+    options: {
+      emailRedirectTo: `${baseUrl}/login`,
+    },
+  });
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data;
+}
+
+export async function signInWithEmail(email: string, password: string) {
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: email,
+    password: password,
+  });
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data;
+}

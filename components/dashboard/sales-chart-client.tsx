@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   AreaChart,
@@ -8,11 +8,11 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-} from "recharts"
-import type { SalesDataPoint } from "@/types/dashboard"
+} from "recharts";
+import type { SalesDataPoint } from "@/types/dashboard";
 
 interface SalesChartClientProps {
-  data: SalesDataPoint[]
+  data: SalesDataPoint[];
 }
 
 export function SalesChartClient({ data }: SalesChartClientProps) {
@@ -63,6 +63,5 @@ export function SalesChartClient({ data }: SalesChartClientProps) {
         />
       </AreaChart>
     </ResponsiveContainer>
-  )
+  );
 }
-

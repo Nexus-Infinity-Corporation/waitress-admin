@@ -1,4 +1,4 @@
-import type { RestaurantClient } from "@/types/restaurant"
+import type { RestaurantClient } from "@/types/restaurant";
 
 export async function getClients(): Promise<RestaurantClient[]> {
   // In a real app, this would fetch from an API
@@ -68,11 +68,12 @@ export async function getClients(): Promise<RestaurantClient[]> {
       totalOrders: 52,
       totalSpent: "$15,800",
     },
-  ]
+  ];
 }
 
-export async function getClientById(id: string): Promise<RestaurantClient | null> {
-  const clients = await getClients()
-  return clients.find((client) => client.id === id) || null
+export async function getClientById(
+  id: string
+): Promise<RestaurantClient | null> {
+  const clients = await getClients();
+  return clients.find((client) => client.id === id) || null;
 }
-

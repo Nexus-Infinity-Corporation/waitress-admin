@@ -1,23 +1,23 @@
-import { createStore } from "zustand/vanilla"
+import { createStore } from "zustand/vanilla";
 
 export type UIState = {
-  sidebarOpen: boolean
-  isMobileMenuOpen: boolean
-}
+  sidebarOpen: boolean;
+  isMobileMenuOpen: boolean;
+};
 
 export type UIActions = {
-  setSidebarOpen: (open: boolean) => void
-  toggleSidebar: () => void
-  setMobileMenuOpen: (open: boolean) => void
-  toggleMobileMenu: () => void
-}
+  setSidebarOpen: (open: boolean) => void;
+  toggleSidebar: () => void;
+  setMobileMenuOpen: (open: boolean) => void;
+  toggleMobileMenu: () => void;
+};
 
-export type UIStore = UIState & UIActions
+export type UIStore = UIState & UIActions;
 
 export const defaultUIState: UIState = {
   sidebarOpen: true,
   isMobileMenuOpen: false,
-}
+};
 
 export const createUIStore = (initState: UIState = defaultUIState) => {
   return createStore<UIStore>()((set) => ({
@@ -27,6 +27,5 @@ export const createUIStore = (initState: UIState = defaultUIState) => {
     setMobileMenuOpen: (open: boolean) => set({ isMobileMenuOpen: open }),
     toggleMobileMenu: () =>
       set((state) => ({ isMobileMenuOpen: !state.isMobileMenuOpen })),
-  }))
-}
-
+  }));
+};

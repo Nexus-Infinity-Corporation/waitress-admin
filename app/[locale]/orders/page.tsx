@@ -1,14 +1,14 @@
-import { HorizontalHeader } from "@/components/dashboard/horizontal-header"
-import { OrdersTable } from "@/components/dashboard/orders-table"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Search, Plus, ChevronRight } from "lucide-react"
+import { HorizontalHeader } from "@/components/dashboard/horizontal-header";
+import { OrdersTable } from "@/components/dashboard/orders-table";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Search, Plus, ChevronRight } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 
 export default function OrdersPage() {
   return (
@@ -48,11 +48,7 @@ export default function OrdersPage() {
           {/* Search */}
           <div className="relative max-w-md">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder="Search Order"
-              className="pl-10"
-            />
+            <Input type="search" placeholder="Search Order" className="pl-10" />
           </div>
 
           {/* Orders Table */}
@@ -60,6 +56,5 @@ export default function OrdersPage() {
         </div>
       </main>
     </div>
-  )
+  );
 }
-

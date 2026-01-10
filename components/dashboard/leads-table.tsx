@@ -1,9 +1,9 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { LeadsTableClient } from "./leads-table-client"
-import { getOrders } from "@/services/dashboard.service"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { LeadsTableClient } from "./leads-table-client";
+import { getOrders } from "@/services/dashboard.service";
 
 export async function LeadsTable() {
-  const leads = await getOrders()
+  const leads = await getOrders();
 
   return (
     <Card>
@@ -14,5 +14,5 @@ export async function LeadsTable() {
         <LeadsTableClient leads={leads} />
       </CardContent>
     </Card>
-  )
+  );
 }

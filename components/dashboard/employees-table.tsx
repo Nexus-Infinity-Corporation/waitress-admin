@@ -1,12 +1,12 @@
-"use client"
+"use client";
 
-import { DataTable, type ColumnDef } from "./data-table"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import type { Employee } from "@/types/restaurant"
+import { DataTable, type ColumnDef } from "./data-table";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import type { Employee } from "@/types/restaurant";
 
 interface EmployeesTableProps {
-  data: Employee[]
+  data: Employee[];
 }
 
 export function EmployeesTable({ data }: EmployeesTableProps) {
@@ -49,8 +49,8 @@ export function EmployeesTable({ data }: EmployeesTableProps) {
             employee.status === "Active"
               ? "success"
               : employee.status === "On Leave"
-              ? "warning"
-              : "destructive"
+                ? "warning"
+                : "destructive"
           }
         >
           {employee.status}
@@ -65,7 +65,7 @@ export function EmployeesTable({ data }: EmployeesTableProps) {
       key: "salary",
       header: "Salary",
     },
-  ]
+  ];
 
   return (
     <DataTable
@@ -78,6 +78,5 @@ export function EmployeesTable({ data }: EmployeesTableProps) {
       onEdit={(employee) => console.log("Edit", employee)}
       onDelete={(employee) => console.log("Delete", employee)}
     />
-  )
+  );
 }
-

@@ -1,9 +1,9 @@
-import { HorizontalHeader } from "@/components/dashboard/horizontal-header"
-import { WarehouseTable } from "@/components/dashboard/warehouse-table"
-import { getWarehouseItems } from "@/services/warehouse.service"
+import { HorizontalHeader } from "@/components/dashboard/horizontal-header";
+import { WarehouseTable } from "@/components/dashboard/warehouse-table";
+import { getWarehouseItems } from "@/services/warehouse.service";
 
 export default async function WarehousePage() {
-  const items = await getWarehouseItems()
+  const items = await getWarehouseItems();
 
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-background">
@@ -14,6 +14,5 @@ export default async function WarehousePage() {
         </div>
       </main>
     </div>
-  )
+  );
 }
-

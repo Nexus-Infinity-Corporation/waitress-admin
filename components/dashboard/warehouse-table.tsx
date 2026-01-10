@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import { DataTable, type ColumnDef } from "./data-table"
-import { Badge } from "@/components/ui/badge"
-import type { WarehouseItem } from "@/types/restaurant"
+import { DataTable, type ColumnDef } from "./data-table";
+import { Badge } from "@/components/ui/badge";
+import type { WarehouseItem } from "@/types/restaurant";
 
 interface WarehouseTableProps {
-  data: WarehouseItem[]
+  data: WarehouseItem[];
 }
 
 export function WarehouseTable({ data }: WarehouseTableProps) {
@@ -67,7 +67,7 @@ export function WarehouseTable({ data }: WarehouseTableProps) {
           <span className="text-sm text-muted-foreground">N/A</span>
         ),
     },
-  ]
+  ];
 
   return (
     <DataTable
@@ -80,6 +80,5 @@ export function WarehouseTable({ data }: WarehouseTableProps) {
       onEdit={(item) => console.log("Edit", item)}
       onDelete={(item) => console.log("Delete", item)}
     />
-  )
+  );
 }
-

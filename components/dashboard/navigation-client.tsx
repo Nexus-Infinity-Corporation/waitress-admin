@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { Link, usePathname } from "@/i18n/routing"
+import { Link, usePathname } from "@/i18n/routing";
 import {
   LayoutDashboard,
   ShoppingCart,
@@ -16,9 +16,9 @@ import {
   Package,
   Warehouse,
   type LucideIcon,
-} from "lucide-react"
-import { cn } from "@/lib/utils"
-import type { NavigationItem } from "@/types/dashboard"
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import type { NavigationItem } from "@/types/dashboard";
 
 const iconMap: Record<string, LucideIcon> = {
   LayoutDashboard,
@@ -34,20 +34,20 @@ const iconMap: Record<string, LucideIcon> = {
   Building2,
   Package,
   Warehouse,
-}
+};
 
 interface NavigationClientProps {
-  items: NavigationItem[]
+  items: NavigationItem[];
 }
 
 export function NavigationClient({ items }: NavigationClientProps) {
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   return (
     <div className="flex h-12 items-center gap-1 border-t border-border px-6 overflow-x-auto">
       {items.map((item) => {
-        const Icon = iconMap[item.icon]
-        const isActive = pathname === item.href
+        const Icon = iconMap[item.icon];
+        const isActive = pathname === item.href;
         return (
           <Link
             key={item.href}
@@ -62,9 +62,8 @@ export function NavigationClient({ items }: NavigationClientProps) {
             {Icon && <Icon className="h-4 w-4" />}
             {item.title}
           </Link>
-        )
+        );
       })}
     </div>
-  )
+  );
 }
-

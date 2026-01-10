@@ -1,4 +1,4 @@
-import type { WarehouseItem } from "@/types/restaurant"
+import type { WarehouseItem } from "@/types/restaurant";
 
 export async function getWarehouseItems(): Promise<WarehouseItem[]> {
   // In a real app, this would fetch from an API
@@ -80,16 +80,17 @@ export async function getWarehouseItems(): Promise<WarehouseItem[]> {
       supplier: "Meat Market Inc.",
       expiryDate: "2024-01-20",
     },
-  ]
+  ];
 }
 
-export async function getWarehouseItemById(id: string): Promise<WarehouseItem | null> {
-  const items = await getWarehouseItems()
-  return items.find((item) => item.id === id) || null
+export async function getWarehouseItemById(
+  id: string
+): Promise<WarehouseItem | null> {
+  const items = await getWarehouseItems();
+  return items.find((item) => item.id === id) || null;
 }
 
 export async function getLowStockItems(): Promise<WarehouseItem[]> {
-  const items = await getWarehouseItems()
-  return items.filter((item) => item.quantity <= item.minStock)
+  const items = await getWarehouseItems();
+  return items.filter((item) => item.quantity <= item.minStock);
 }
-

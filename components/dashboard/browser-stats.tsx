@@ -1,8 +1,8 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { getBrowserStatsData } from "@/services/dashboard.service"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getBrowserStatsData } from "@/services/dashboard.service";
 
 export async function BrowserStats() {
-  const browsers = await getBrowserStatsData()
+  const browsers = await getBrowserStatsData();
 
   return (
     <Card>
@@ -28,5 +28,5 @@ export async function BrowserStats() {
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }

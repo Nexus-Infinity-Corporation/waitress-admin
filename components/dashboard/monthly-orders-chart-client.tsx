@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   BarChart,
@@ -8,11 +8,11 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-} from "recharts"
-import type { MonthlyOrderDataPoint } from "@/types/dashboard"
+} from "recharts";
+import type { MonthlyOrderDataPoint } from "@/types/dashboard";
 
 interface MonthlyOrdersChartClientProps {
-  data: MonthlyOrderDataPoint[]
+  data: MonthlyOrderDataPoint[];
 }
 
 export function MonthlyOrdersChartClient({
@@ -45,13 +45,8 @@ export function MonthlyOrdersChartClient({
             borderRadius: "8px",
           }}
         />
-        <Bar
-          dataKey="orders"
-          fill="url(#colorOrders)"
-          radius={[8, 8, 0, 0]}
-        />
+        <Bar dataKey="orders" fill="url(#colorOrders)" radius={[8, 8, 0, 0]} />
       </BarChart>
     </ResponsiveContainer>
-  )
+  );
 }
-

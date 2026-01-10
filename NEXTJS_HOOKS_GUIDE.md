@@ -3,6 +3,7 @@
 This guide covers the recommended hooks for Next.js 16 (React 19) with practical examples.
 
 ## Table of Contents
+
 1. [useActionState](#useactionstate) - Replaces useFormState
 2. [useOptimistic](#useoptimistic) - Optimistic UI Updates
 3. [useFormStatus](#useformstatus) - Form Submission Status
@@ -84,19 +85,19 @@ export default function SignupForm() {
 
 ```typescript
 // app/actions.ts
-'use server'
+"use server";
 
 export async function createPost(prevState: any, formData: FormData) {
-  const title = formData.get('title') as string
+  const title = formData.get("title") as string;
 
   if (!title || title.length < 3) {
-    return { message: 'Title must be at least 3 characters' }
+    return { message: "Title must be at least 3 characters" };
   }
 
   // Your database logic here
   // await db.posts.create({ title })
 
-  return { message: 'Post created successfully!' }
+  return { message: "Post created successfully!" };
 }
 ```
 
@@ -462,9 +463,9 @@ const nextConfig = {
   experimental: {
     viewTransition: true,
   },
-}
+};
 
-export default nextConfig
+export default nextConfig;
 ```
 
 ### Basic Usage
@@ -525,20 +526,23 @@ export function ImageGallery() {
 ### From useFormState to useActionState
 
 **Before (Next.js 14):**
-```typescript
-import { useFormState } from 'react-dom'
 
-const [state, formAction] = useFormState(createPost, initialState)
+```typescript
+import { useFormState } from "react-dom";
+
+const [state, formAction] = useFormState(createPost, initialState);
 ```
 
 **After (Next.js 16):**
-```typescript
-import { useActionState } from 'react'
 
-const [state, action, pending] = useActionState(createPost, initialState)
+```typescript
+import { useActionState } from "react";
+
+const [state, action, pending] = useActionState(createPost, initialState);
 ```
 
 ### Key Differences:
+
 - `useActionState` is from `'react'` (not `'react-dom'`)
 - Returns `pending` state directly (no need for `useFormStatus` in simple cases)
 - Better TypeScript support
@@ -558,12 +562,11 @@ const [state, action, pending] = useActionState(createPost, initialState)
 
 ## Summary
 
-| Hook | Purpose | React Version | Import From |
-|------|---------|---------------|-------------|
-| `useActionState` | Form/action state with pending | 19+ | `react` |
-| `useOptimistic` | Optimistic UI updates | 19+ | `react` |
-| `useFormStatus` | Form submission status | 19+ | `react-dom` |
-| `useTransition` | Non-blocking updates | 18+ | `react` |
-| `useEffectEvent` | Extract effect logic | 19.2+ | `react` |
-| `ViewTransition` | View transitions | 19.2+ | `react` |
-
+| Hook             | Purpose                        | React Version | Import From |
+| ---------------- | ------------------------------ | ------------- | ----------- |
+| `useActionState` | Form/action state with pending | 19+           | `react`     |
+| `useOptimistic`  | Optimistic UI updates          | 19+           | `react`     |
+| `useFormStatus`  | Form submission status         | 19+           | `react-dom` |
+| `useTransition`  | Non-blocking updates           | 18+           | `react`     |
+| `useEffectEvent` | Extract effect logic           | 19.2+         | `react`     |
+| `ViewTransition` | View transitions               | 19.2+         | `react`     |
