@@ -8,10 +8,10 @@ import type {
   BrowserStatsData,
 } from "@/types/dashboard";
 import type { RestaurantMetrics } from "@/types/restaurant";
-import { getEmployees } from "./employees.service";
-import { getClients } from "./clients.service";
-import { getProducts } from "./products.service";
-import { getLowStockItems } from "./warehouse.service";
+import { getEmployees } from "@/services/employees.service";
+import { getClients } from "@/services/clients.service";
+import { getProducts } from "@/services/products.service";
+import { getLowStockItems } from "@/services/warehouse.service";
 
 export async function getMetrics(): Promise<MetricData[]> {
   // In a real app, this would fetch from an API

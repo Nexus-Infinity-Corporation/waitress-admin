@@ -1,7 +1,7 @@
 "use client";
 
-import { DataTable, type ColumnDef } from "./data-table";
-import { Badge } from "@/shared/components/ui/badge";
+import { DataTable, type ColumnDef } from "@/components/data-table";
+import { Badge } from "@/components/ui/badge";
 import type { Product } from "@/shared/types/restaurant";
 
 interface ProductsTableProps {

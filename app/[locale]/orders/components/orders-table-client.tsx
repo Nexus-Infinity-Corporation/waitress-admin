@@ -1,7 +1,7 @@
 "use client";
 
-import { Badge } from "@/shared/components/ui/badge";
-import { Button } from "@/shared/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Edit, Trash2 } from "lucide-react";
 import type { Order } from "@/types/dashboard";
 

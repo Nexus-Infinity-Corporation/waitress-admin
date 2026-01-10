@@ -1,8 +1,8 @@
 "use client";
 
-import { DataTable, type ColumnDef } from "./data-table";
-import { Badge } from "@/shared/components/ui/badge";
-import { Avatar, AvatarFallback } from "@/shared/components/ui/avatar";
+import { DataTable, type ColumnDef } from "@/components/data-table";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import type { Employee } from "@/shared/types/restaurant";
 
 interface EmployeesTableProps {
