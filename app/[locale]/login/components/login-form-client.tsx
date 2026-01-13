@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, startTransition, useEffect } from "react";
+import { useActionState, startTransition, useEffect, Suspense } from "react";
 import { loginAction } from "../services/login.service";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/card";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/routing";
+import { useSearchParams } from "next/navigation";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useState } from "react";
 
@@ -22,9 +23,10 @@ const initialState = {
   message: undefined,
 };
 
-export function LoginFormClient() {
+function LoginFormContent() {
   const t = useTranslations("login");
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [state, formAction, pending] = useActionState(
     loginAction,
     initialState
@@ -35,10 +37,12 @@ export function LoginFormClient() {
   useEffect(() => {
     if (state?.message && !pending) {
       startTransition(() => {
-        router.push("/dashboard");
+        // Redirect to the original URL if provided, otherwise go to dashboard
+        const redirectTo = searchParams.get("redirect");
+        router.push(redirectTo || "/dashboard");
       });
     }
-  }, [state?.message, pending, router]);
+  }, [state?.message, pending, router, searchParams]);
 
   return (
     <Card className="w-full max-w-md">
@@ -162,5 +166,17 @@ export function LoginFormClient() {
         </form>
       </CardContent>
     </Card>
+  );
+}
+
+export function LoginFormClient() {
+  return (
+    <Suspense
+      fallback={
+        <div className="w-full max-w-md animate-pulse bg-muted h-96 rounded-lg" />
+      }
+    >
+      <LoginFormContent />
+    </Suspense>
   );
 }

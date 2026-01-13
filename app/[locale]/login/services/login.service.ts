@@ -2,58 +2,50 @@
 
 import type { LoginState } from "@/app/[locale]/login/types/login";
 import { signInWithEmail } from "@/services/employees.service";
+import { parseLoginFormData } from "../schemas/login.schema";
 
 export async function loginAction(
   prevState: LoginState | undefined,
   formData: FormData
 ): Promise<LoginState> {
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
+  // Validate form data using Zod schema
+  const validation = parseLoginFormData(formData);
 
-  const errors: LoginState["errors"] = {};
-
-  // Email validation
-  if (!email || email.trim() === "") {
-    errors.email = ["Email is required"];
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    errors.email = ["Invalid email format"];
+  // If validation fails, return errors
+  if (!validation.success) {
+    return { errors: validation.errors };
   }
 
-  // Password validation
-  if (!password || password.trim() === "") {
-    errors.password = ["Password is required"];
-  } else if (password.length < 6) {
-    errors.password = ["Password must be at least 6 characters"];
-  }
+  // Extract validated data
+  const { email, password } = validation.data;
 
-  // If there are validation errors, return them
-  if (Object.keys(errors).length > 0) {
-    return { errors };
-  }
+  try {
+    // Attempt to sign in with validated credentials
+    const user = await signInWithEmail(email, password);
 
-  const user = await signInWithEmail(email, password);
-  if (!user) {
+    if (!user) {
+      return {
+        errors: {
+          _form: ["Invalid email or password"],
+        },
+      };
+    }
+
+    // Return success state
+    return {
+      message: "Login successful",
+    };
+  } catch (error) {
+    // Handle unexpected errors
+    const errorMessage =
+      error instanceof Error
+        ? error.message
+        : "An unexpected error occurred during login";
+
     return {
       errors: {
-        _form: ["Invalid email or password"],
+        _form: [errorMessage],
       },
     };
   }
-
-  // TODO: Implement actual authentication logic here
-  // This is a placeholder for the authentication service
-  // Example:
-  // const user = await authenticateUser(email, password);
-  // if (!user) {
-  //   return {
-  //     errors: {
-  //       _form: ["Invalid email or password"],
-  //     },
-  //   };
-  // }
-
-  // For now, return success (remove this when implementing real auth)
-  return {
-    message: "Login successful",
-  };
 }
