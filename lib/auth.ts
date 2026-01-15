@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "@/i18n/routing";
+import { getLocale } from "next-intl/server";
 
 /**
  * Checks if the user is authenticated
@@ -15,10 +16,11 @@ export async function requireAuth(redirectTo?: string) {
   } = await supabase.auth.getUser();
 
   if (error || !user) {
+    const locale = await getLocale();
     const loginPath = redirectTo
       ? `/login?redirect=${encodeURIComponent(redirectTo)}`
       : "/login";
-    redirect(loginPath);
+    redirect({ href: loginPath, locale });
   }
 
   return user;

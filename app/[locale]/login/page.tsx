@@ -13,7 +13,11 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default async function LoginPage() {
+export default async function LoginPage({
+  params,
+}: Readonly<{
+  params: Promise<{ locale: string }>;
+}>) {
   // If user is already authenticated, redirect to dashboard
   const supabase = await createClient();
   const {
@@ -21,7 +25,8 @@ export default async function LoginPage() {
   } = await supabase.auth.getUser();
 
   if (user) {
-    redirect("/dashboard");
+    const { locale } = await params;
+    redirect({ href: "/dashboard", locale });
   }
 
   return (
