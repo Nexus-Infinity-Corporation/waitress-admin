@@ -39,6 +39,9 @@ export function EmployeesTable({ data }: EmployeesTableProps) {
     {
       key: "phone",
       header: "Phone",
+      render: (employee) => (
+        <span className="text-sm">{employee.phone || "N/A"}</span>
+      ),
     },
     {
       key: "status",
