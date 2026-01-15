@@ -9,8 +9,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { requireAuth } from "@/lib/auth";
 
-export default function OrdersPage() {
+export default async function OrdersPage() {
+  // Ensure user is authenticated (fallback check)
+  await requireAuth("/orders");
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-background">
       <HorizontalHeader />

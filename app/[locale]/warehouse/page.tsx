@@ -1,8 +1,12 @@
 import { HorizontalHeader } from "@/components/dashboard/horizontal-header";
 import { WarehouseTable } from "@/components/dashboard/warehouse-table";
 import { getWarehouseItems } from "@/services/warehouse.service";
+import { requireAuth } from "@/lib/auth";
 
 export default async function WarehousePage() {
+  // Ensure user is authenticated (fallback check)
+  await requireAuth("/warehouse");
+
   const items = await getWarehouseItems();
 
   return (

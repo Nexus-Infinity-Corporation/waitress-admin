@@ -1,5 +1,5 @@
 import type { Employee } from "@/types/restaurant";
-import supabase from "./api.service";
+import { createClient } from "@/lib/supabase/server";
 import { User } from "@supabase/supabase-js";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
@@ -66,6 +66,7 @@ export async function getEmployeeById(id: string): Promise<Employee | null> {
 }
 
 export async function signUpNewUser(email: string, password: string) {
+  const supabase = await createClient();
   const { data, error } = await supabase.auth.signUp({
     email: email,
     password: password,
@@ -80,6 +81,7 @@ export async function signUpNewUser(email: string, password: string) {
 }
 
 export async function signInWithEmail(email: string, password: string) {
+  const supabase = await createClient();
   const { data, error } = await supabase.auth.signInWithPassword({
     email: email,
     password: password,
@@ -91,6 +93,7 @@ export async function signInWithEmail(email: string, password: string) {
 }
 
 export async function updatePassword(password: string) {
+  const supabase = await createClient();
   const { data, error } = await supabase.auth.updateUser({
     password: password,
   });
@@ -101,6 +104,7 @@ export async function updatePassword(password: string) {
 }
 
 export async function resetPasswordForEmail(email: string) {
+  const supabase = await createClient();
   const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
     redirectTo: `${baseUrl}/reset-password`,
   });
@@ -111,6 +115,7 @@ export async function resetPasswordForEmail(email: string) {
 }
 
 export async function signOut() {
+  const supabase = await createClient();
   const { error } = await supabase.auth.signOut();
   if (error) {
     throw new Error(error.message);
@@ -119,6 +124,7 @@ export async function signOut() {
 }
 
 export async function getUser() {
+  const supabase = await createClient();
   const { data, error } = await supabase.auth.getUser();
   if (error) {
     throw new Error(error.message);
@@ -127,6 +133,7 @@ export async function getUser() {
 }
 
 export async function updateUser(user: User) {
+  const supabase = await createClient();
   const { data, error } = await supabase.auth.updateUser({
     data: user,
   });

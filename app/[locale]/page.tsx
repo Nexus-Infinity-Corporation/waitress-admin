@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { getRestaurantMetrics } from "@/services/dashboard.service";
 import { getTranslations } from "next-intl/server";
+import { requireAuth } from "@/lib/auth";
 
 const iconMap: Record<string, LucideIcon> = {
   green: Users,
@@ -20,6 +21,9 @@ const iconMap: Record<string, LucideIcon> = {
 };
 
 export default async function Dashboard() {
+  // Ensure user is authenticated (fallback check)
+  await requireAuth("/");
+
   const metrics = await getRestaurantMetrics();
   const t = await getTranslations("dashboard");
 
