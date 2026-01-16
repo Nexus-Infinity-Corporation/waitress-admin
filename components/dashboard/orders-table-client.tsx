@@ -45,7 +45,7 @@ export function OrdersTableClient({ orders }: OrdersTableClientProps) {
           {orders.map((order) => (
             <tr
               key={order.id}
-              className="border-b hover:bg-muted/50 transition-colors"
+              className="border-b hover:bg-muted/50 transition-colors duration-1000 ease-in-out"
             >
               <td className="px-6 py-4">
                 <input type="checkbox" className="rounded border-input" />

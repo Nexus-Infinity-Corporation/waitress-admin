@@ -19,7 +19,7 @@ export async function BrowserStats() {
               </div>
               <div className="h-2 w-full overflow-hidden rounded-full bg-secondary">
                 <div
-                  className={`h-full ${browser.color} transition-all`}
+                  className={`h-full ${browser.color} transition-all duration-1000 ease-in-out`}
                   style={{ width: `${browser.percentage}%` }}
                 />
               </div>

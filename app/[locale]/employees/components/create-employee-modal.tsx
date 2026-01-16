@@ -79,7 +79,7 @@ export function CreateEmployeeModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto transition-all duration-1000 ease-in-out">
         <DialogHeader>
           <DialogTitle>Create New Employee</DialogTitle>
           <DialogDescription>
@@ -108,6 +108,7 @@ export function CreateEmployeeModal({
                   aria-describedby={
                     state?.errors?.firstName ? "firstName-error" : undefined
                   }
+                  className="transition-all duration-1000 ease-in-out focus:scale-[1.02] focus:shadow-md"
                 />
                 {state?.errors?.firstName && (
                   <p
@@ -220,7 +221,7 @@ export function CreateEmployeeModal({
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors duration-1000 ease-in-out"
                   disabled={pending}
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
@@ -417,10 +418,15 @@ export function CreateEmployeeModal({
               variant="outline"
               onClick={() => onOpenChange(false)}
               disabled={pending}
+              className="transition-all duration-1000 ease-in-out hover:scale-105 hover:shadow-md active:scale-95"
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={pending}>
+            <Button
+              type="submit"
+              disabled={pending}
+              className="transition-all duration-1000 ease-in-out hover:scale-105 hover:shadow-md active:scale-95"
+            >
               {pending ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />

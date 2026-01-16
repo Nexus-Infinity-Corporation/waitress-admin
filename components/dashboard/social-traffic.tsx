@@ -27,7 +27,7 @@ export async function SocialTraffic() {
               </div>
               <div className="h-2 w-full overflow-hidden rounded-full bg-secondary">
                 <div
-                  className="h-full bg-primary transition-all"
+                  className="h-full bg-primary transition-all duration-1000 ease-in-out"
                   style={{ width: `${item.percentage}%` }}
                 />
               </div>

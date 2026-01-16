@@ -44,10 +44,13 @@ export async function getMetrics(): Promise<MetricData[]> {
 }
 
 export async function getRestaurantMetrics(): Promise<RestaurantMetrics> {
-  const employees = await getEmployees();
-  const clients = await getClients();
-  const products = await getProducts();
-  const lowStockItems = await getLowStockItems();
+  // Run all fetches in parallel for better performance
+  const [employees, clients, products, lowStockItems] = await Promise.all([
+    getEmployees(),
+    getClients(),
+    getProducts(),
+    getLowStockItems(),
+  ]);
 
   return {
     totalEmployees: employees.length,

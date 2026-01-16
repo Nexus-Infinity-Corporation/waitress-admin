@@ -23,11 +23,13 @@ export function HeaderClient() {
   return (
     <div className="flex h-16 items-center justify-between px-6">
       {/* Logo */}
-      <div className="flex items-center gap-3">
-        <div className="flex h-8 w-8 items-center justify-center rounded bg-primary text-primary-foreground font-bold text-lg">
+      <div className="flex items-center gap-3 transition-all duration-1000 ease-in-out hover:scale-105 cursor-pointer">
+        <div className="flex h-8 w-8 items-center justify-center rounded bg-primary text-primary-foreground font-bold text-lg transition-all duration-1000 ease-in-out hover:rotate-12 hover:shadow-lg">
           A
         </div>
-        <span className="text-xl font-bold">Amdash</span>
+        <span className="text-xl font-bold transition-colors duration-1000 ease-in-out">
+          Amdash
+        </span>
       </div>
 
       {/* Search */}
@@ -37,7 +39,7 @@ export function HeaderClient() {
           <input
             type="search"
             placeholder={t("search")}
-            className="w-full rounded-lg border border-input bg-background pl-10 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+            className="w-full rounded-lg border border-input bg-background pl-10 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring transition-all duration-1000 ease-in-out focus:scale-[1.02] focus:shadow-md"
           />
         </div>
       </div>
@@ -47,15 +49,23 @@ export function HeaderClient() {
         <LanguageSwitcher />
         <ThemeSwitcher />
 
-        <Button variant="ghost" size="icon">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="transition-all duration-1000 ease-in-out hover:scale-110 hover:rotate-90"
+        >
           <Grid className="h-5 w-5" />
         </Button>
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="relative">
-              <Bell className="h-5 w-5" />
-              <Badge className="absolute -right-1 -top-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-red-500">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="relative transition-all duration-1000 ease-in-out hover:scale-110 hover:rotate-12"
+            >
+              <Bell className="h-5 w-5 transition-transform duration-1000 ease-in-out" />
+              <Badge className="absolute -right-1 -top-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-red-500 transition-all duration-1000 ease-in-out hover:scale-110 animate-pulse">
                 7
               </Badge>
             </Button>
@@ -79,9 +89,13 @@ export function HeaderClient() {
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="relative">
-              <MessageSquare className="h-5 w-5" />
-              <Badge className="absolute -right-1 -top-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-red-500">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="relative transition-all duration-1000 ease-in-out hover:scale-110 hover:rotate-12"
+            >
+              <MessageSquare className="h-5 w-5 transition-transform duration-1000 ease-in-out" />
+              <Badge className="absolute -right-1 -top-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-red-500 transition-all duration-1000 ease-in-out hover:scale-110 animate-pulse">
                 8
               </Badge>
             </Button>
@@ -105,13 +119,20 @@ export function HeaderClient() {
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="flex items-center gap-2">
-              <Avatar className="h-8 w-8">
+            <Button
+              variant="ghost"
+              className="flex items-center gap-2 transition-all duration-1000 ease-in-out hover:scale-105"
+            >
+              <Avatar className="h-8 w-8 transition-all duration-1000 ease-in-out hover:ring-2 hover:ring-primary">
                 <AvatarFallback>PS</AvatarFallback>
               </Avatar>
               <div className="hidden md:block text-left">
-                <p className="text-sm font-medium">Pauline Sei</p>
-                <p className="text-xs text-muted-foreground">Web Designer</p>
+                <p className="text-sm font-medium transition-colors duration-1000 ease-in-out">
+                  Pauline Sei
+                </p>
+                <p className="text-xs text-muted-foreground transition-colors duration-1000 ease-in-out">
+                  Web Designer
+                </p>
               </div>
             </Button>
           </DropdownMenuTrigger>
