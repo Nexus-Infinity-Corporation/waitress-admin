@@ -47,7 +47,7 @@ export async function createEmployeeAction(
   try {
     // Step 1: Create user in Supabase Auth
     // Try using admin API first (requires service role key), fallback to signUp
-    let userId: string;
+    let userId: string | undefined;
     let authError: Error | null = null;
 
     // Check if we have service role key for admin API
@@ -114,9 +114,21 @@ export async function createEmployeeAction(
       };
     }
 
+    // Ensure userId is defined (TypeScript guard)
+    if (!userId) {
+      return {
+        errors: {
+          _form: ["Failed to create user account: User ID not available"],
+        },
+      };
+    }
+
+    // TypeScript now knows userId is defined, assign to const for clarity
+    const finalUserId: string = userId;
+
     // Step 2: Create user record in users table
     const { error: userError } = await supabase.from("users").insert({
-      id: userId,
+      id: finalUserId,
       first_name: firstName,
       last_name: lastName || null,
       email,
@@ -130,7 +142,8 @@ export async function createEmployeeAction(
 
     if (userError) {
       // If user creation fails, try to clean up auth user (only if we have admin access)
-      const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+      const serviceRoleKey: string | undefined =
+        process.env.SUPABASE_SERVICE_ROLE_KEY;
       if (serviceRoleKey) {
         try {
           const { createClient: createAdminClient } =
@@ -139,7 +152,7 @@ export async function createEmployeeAction(
             process.env.NEXT_PUBLIC_SUPABASE_URL!,
             serviceRoleKey
           );
-          await supabaseAdmin.auth.admin.deleteUser(userId);
+          await supabaseAdmin.auth.admin.deleteUser(finalUserId);
         } catch (cleanupError) {
           console.error("Failed to cleanup auth user:", cleanupError);
         }
@@ -156,7 +169,7 @@ export async function createEmployeeAction(
       const { error: roleError } = await supabase
         .from("employee_roles")
         .insert({
-          user_id: userId,
+          user_id: finalUserId,
           role: (role as "staff" | "admin" | "regular") || null,
           position: position || null,
           business_id: businessId || null,
@@ -192,7 +205,7 @@ export async function createEmployeeAction(
       const { error: assignmentError } = await supabase
         .from("employee_assignments")
         .insert({
-          user_id: userId,
+          user_id: finalUserId,
           role_id: roleId,
           business_id: businessId || null,
           branch_id: branchId || null,
