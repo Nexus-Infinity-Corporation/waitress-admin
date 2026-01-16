@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z, type ZodIssue } from "zod";
 
 /**
  * Zod schema for creating a new employee
@@ -121,8 +121,8 @@ export function parseCreateEmployeeFormData(formData: FormData):
 
   // Transform Zod errors into the format expected by form state
   const errors: Record<string, string[]> = {};
-  result.error.issues.forEach((issue: { path: string[]; message: string }) => {
-    const path = issue.path.join(".");
+  result.error.issues.forEach((issue: ZodIssue) => {
+    const path = issue.path.map((key: string | number) => String(key)).join(".");
     if (!errors[path]) {
       errors[path] = [];
     }
