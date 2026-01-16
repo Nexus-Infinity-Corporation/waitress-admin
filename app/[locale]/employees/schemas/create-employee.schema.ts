@@ -6,9 +6,7 @@ import { z } from "zod";
  */
 export const createEmployeeSchema = z.object({
   firstName: z
-    .string({
-      required_error: "First name is required",
-    })
+    .string()
     .trim()
     .min(1, { message: "First name is required" })
     .max(100, { message: "First name must be less than 100 characters" }),
@@ -18,9 +16,7 @@ export const createEmployeeSchema = z.object({
     .max(100, { message: "Last name must be less than 100 characters" })
     .optional(),
   email: z
-    .string({
-      required_error: "Email is required",
-    })
+    .string()
     .trim()
     .min(1, { message: "Email is required" })
     .pipe(z.email({ message: "Invalid email format" }).toLowerCase()),
@@ -39,9 +35,7 @@ export const createEmployeeSchema = z.object({
     .max(50, { message: "Username must be less than 50 characters" })
     .optional(),
   password: z
-    .string({
-      required_error: "Password is required",
-    })
+    .string()
     .trim()
     .min(1, { message: "Password is required" })
     .min(6, { message: "Password must be at least 6 characters" }),
@@ -59,7 +53,7 @@ export const createEmployeeSchema = z.object({
   hourlyRate: z
     .string()
     .optional()
-    .transform((val) => (val ? parseFloat(val) : undefined))
+    .transform((val: string | undefined) => (val ? parseFloat(val) : undefined))
     .pipe(
       z
         .number()
@@ -74,7 +68,7 @@ export const createEmployeeSchema = z.object({
   age: z
     .string()
     .optional()
-    .transform((val) => (val ? parseInt(val, 10) : undefined))
+    .transform((val: string | undefined) => (val ? parseInt(val, 10) : undefined))
     .pipe(
       z
         .number()
@@ -127,7 +121,7 @@ export function parseCreateEmployeeFormData(formData: FormData):
 
   // Transform Zod errors into the format expected by form state
   const errors: Record<string, string[]> = {};
-  result.error.issues.forEach((issue) => {
+  result.error.issues.forEach((issue: { path: string[]; message: string }) => {
     const path = issue.path.join(".");
     if (!errors[path]) {
       errors[path] = [];
