@@ -15,6 +15,8 @@ import {
   Building2,
   Package,
   Warehouse,
+  GitBranch,
+  Building,
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/shared/lib/utils";
@@ -34,6 +36,8 @@ const iconMap: Record<string, LucideIcon> = {
   Building2,
   Package,
   Warehouse,
+  GitBranch,
+  Building,
 };
 
 interface NavigationClientProps {
@@ -44,7 +48,7 @@ export function NavigationClient({ items }: NavigationClientProps) {
   const pathname = usePathname();
 
   return (
-    <div className="flex h-12 items-center gap-1 border-t border-border px-6 overflow-x-auto">
+    <div className="flex h-12 gap-1 sticky top-0 bg-background border-t border-border px-6">
       {items.map((item) => {
         const Icon = iconMap[item.icon];
         const isActive = pathname === item.href;
@@ -53,7 +57,7 @@ export function NavigationClient({ items }: NavigationClientProps) {
             key={item.href}
             href={item.href}
             className={cn(
-              "flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors whitespace-nowrap",
+              "flex items-center gap-2 mx-3 rounded-lg px-4 py-2 text-sm font-medium transition-colors whitespace-nowrap",
               isActive
                 ? "bg-primary text-primary-foreground"
                 : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"

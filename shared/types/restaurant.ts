@@ -57,6 +57,19 @@ export interface WarehouseItem {
   expiryDate?: string;
 }
 
+export interface Branch {
+  id: string;
+  name: string;
+  businessName: string;
+  address: string;
+  city: string;
+  phone: string;
+  status: "Active" | "Inactive";
+  openingHours: string;
+  totalEmployees: number;
+  createdAt: string;
+}
+
 export interface RestaurantMetrics {
   totalEmployees: number;
   activeClients: number;

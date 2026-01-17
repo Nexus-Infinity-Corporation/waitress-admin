@@ -16,6 +16,8 @@ import {
   Package,
   Warehouse,
   type LucideIcon,
+  Building,
+  GitBranch,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { NavigationItem } from "@/types/dashboard";
@@ -34,6 +36,8 @@ const iconMap: Record<string, LucideIcon> = {
   Building2,
   Package,
   Warehouse,
+  Building,
+  GitBranch,
 };
 
 interface NavigationClientProps {

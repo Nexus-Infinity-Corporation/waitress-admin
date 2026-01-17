@@ -5,6 +5,7 @@ export async function getNavigationItems(): Promise<NavigationItem[]> {
     { title: "Dashboard", href: "/", icon: "LayoutDashboard" },
     { title: "Employees", href: "/employees", icon: "Users" },
     { title: "Restaurant Clients", href: "/clients", icon: "Building2" },
+    { title: "Branches", href: "/branches", icon: "Building" },
     { title: "Products", href: "/products", icon: "Package" },
     { title: "Warehouse", href: "/warehouse", icon: "Warehouse" },
     { title: "Orders", href: "/orders", icon: "ShoppingCart" },
