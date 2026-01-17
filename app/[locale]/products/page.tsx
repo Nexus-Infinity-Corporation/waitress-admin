@@ -1,6 +1,6 @@
 import { HorizontalHeader } from "@/components/dashboard/horizontal-header";
-import { ProductsTable } from "@/components/dashboard/products-table";
-import { getProducts } from "@/services/products.service";
+import { ProductsTable } from "./components/products-table";
+import { getProducts } from "./services/products.service";
 import { requireAuth } from "@/lib/auth";
 
 export default async function ProductsPage() {

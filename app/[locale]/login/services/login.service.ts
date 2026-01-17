@@ -1,8 +1,23 @@
 "use server";
 
 import type { LoginState } from "@/app/[locale]/login/types/login";
-import { signInWithEmail } from "@/services/employees.service";
+import { createClient } from "@/lib/supabase/server";
 import { parseLoginFormData } from "../schemas/login.schema";
+
+/**
+ * Signs in a user with email and password
+ */
+async function signInWithEmail(email: string, password: string) {
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: email,
+    password: password,
+  });
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data;
+}
 
 export async function loginAction(
   prevState: LoginState | undefined,

@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getSocialTrafficData } from "@/services/dashboard.service";
+import { getSocialTrafficData } from "@/app/[locale]/dashboard/services/dashboard.service";
 
 export async function SocialTraffic() {
   const socialData = await getSocialTrafficData();

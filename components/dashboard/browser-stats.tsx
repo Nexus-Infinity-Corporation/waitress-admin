@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getBrowserStatsData } from "@/services/dashboard.service";
+import { getBrowserStatsData } from "@/app/[locale]/dashboard/services/dashboard.service";
 
 export async function BrowserStats() {
   const browsers = await getBrowserStatsData();

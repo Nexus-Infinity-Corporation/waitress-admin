@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { HorizontalHeader } from "@/components/dashboard/horizontal-header";
-import { EmployeesTable } from "@/components/dashboard/employees-table";
-import { getEmployees } from "@/services/employees.service";
+import { EmployeesTable } from "./components/employees-table";
+import { getEmployees } from "./services/employees.service";
 import { requireAuth } from "@/lib/auth";
 import {
   getBusinesses,

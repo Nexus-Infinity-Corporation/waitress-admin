@@ -1,6 +1,6 @@
 import { HorizontalHeader } from "@/components/dashboard/horizontal-header";
-import { ClientsTable } from "@/components/dashboard/clients-table";
-import { getClients } from "@/services/clients.service";
+import { ClientsTable } from "./components/clients-table";
+import { getClients } from "./services/clients.service";
 import { requireAuth } from "@/lib/auth";
 
 export default async function ClientsPage() {

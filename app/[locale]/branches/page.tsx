@@ -1,6 +1,6 @@
 import { HorizontalHeader } from "@/components/dashboard/horizontal-header";
-import { BranchesTable } from "@/components/dashboard/branches-table";
-import { getBranches } from "@/services/branches.service";
+import { BranchesTable } from "./components/branches-table";
+import { getBranches } from "./services/branches.service";
 import { requireAuth } from "@/lib/auth";
 
 export default async function BranchesPage() {

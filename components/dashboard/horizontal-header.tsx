@@ -1,6 +1,6 @@
 import { HeaderClient } from "./header-client";
 import { NavigationClient } from "./navigation-client";
-import { getNavigationItems } from "@/services/navigation.service";
+import { getNavigationItems } from "@/app/[locale]/dashboard/services/navigation.service";
 
 export async function HorizontalHeader() {
   const navItems = await getNavigationItems();
