@@ -5,6 +5,7 @@ export async function getMockAdministrators(): Promise<Administrator[]> {
   return [
     {
       id: "ADM-001",
+      user_id: "USR-001",
       name: "John Doe",
       email: "john.doe@example.com",
       phone: "+1 234-567-8901",
@@ -16,6 +17,7 @@ export async function getMockAdministrators(): Promise<Administrator[]> {
     },
     {
       id: "ADM-002",
+      user_id: "USR-002",
       name: "Jane Smith",
       email: "jane.smith@example.com",
       phone: "+1 234-567-8902",
@@ -27,6 +29,7 @@ export async function getMockAdministrators(): Promise<Administrator[]> {
     },
     {
       id: "ADM-003",
+      user_id: "USR-003",
       name: "Alice Johnson",
       email: "alice.johnson@example.com",
       phone: "+1 234-567-8903",
@@ -38,6 +41,7 @@ export async function getMockAdministrators(): Promise<Administrator[]> {
     },
     {
       id: "ADM-004",
+      user_id: "USR-004",
       name: "Bob Brown",
       email: "bob.brown@example.com",
       phone: "+1 234-567-8904",
@@ -49,6 +53,7 @@ export async function getMockAdministrators(): Promise<Administrator[]> {
     },
     {
       id: "ADM-005",
+      user_id: "USR-005",
       name: "Charlie Davis",
       email: "charlie.davis@example.com",
       phone: "+1 234-567-8905",
