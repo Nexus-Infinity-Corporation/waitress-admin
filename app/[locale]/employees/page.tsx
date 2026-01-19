@@ -18,8 +18,8 @@ async function EmployeesTableWrapper() {
   return (
     <EmployeesTable
       data={employees}
-      businesses={businesses}
-      branches={branches}
+      // businesses={businesses}
+      // branches={branches}
     />
   );
 }
