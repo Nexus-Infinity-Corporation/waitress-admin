@@ -45,12 +45,12 @@ function LoginFormContent() {
   }, [state?.message, pending, router, searchParams]);
 
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full max-w-md transition-all duration-1000 ease-in-out hover:shadow-lg">
       <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold text-center">
+        <CardTitle className="text-2xl font-bold text-center transition-all duration-1000 ease-in-out">
           {t("title")}
         </CardTitle>
-        <CardDescription className="text-center">
+        <CardDescription className="text-center transition-all duration-1000 ease-in-out">
           {t("description")}
         </CardDescription>
       </CardHeader>
@@ -73,11 +73,12 @@ function LoginFormContent() {
               aria-describedby={
                 state?.errors?.email ? "email-error" : undefined
               }
+              className="transition-all duration-1000 ease-in-out focus:scale-[1.02]"
             />
             {state?.errors?.email && (
               <p
                 id="email-error"
-                className="text-sm text-destructive"
+                className="text-sm text-destructive animate-in fade-in slide-in-from-top-4 duration-1000"
                 role="alert"
               >
                 {state.errors.email[0]}
@@ -100,12 +101,12 @@ function LoginFormContent() {
                 aria-describedby={
                   state?.errors?.password ? "password-error" : undefined
                 }
-                className="pr-10"
+                className="pr-10 transition-all duration-1000 ease-in-out focus:scale-[1.02]"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors duration-1000 ease-in-out"
                 disabled={pending}
                 aria-label={
                   showPassword ? t("hidePassword") : t("showPassword")
@@ -121,7 +122,7 @@ function LoginFormContent() {
             {state?.errors?.password && (
               <p
                 id="password-error"
-                className="text-sm text-destructive"
+                className="text-sm text-destructive animate-in fade-in slide-in-from-top-4 duration-1000"
                 role="alert"
               >
                 {state.errors.password[0]}
@@ -131,7 +132,7 @@ function LoginFormContent() {
 
           {/* Form-level errors */}
           {state?.errors?._form && (
-            <div className="rounded-md bg-destructive/15 p-3">
+            <div className="rounded-md bg-destructive/15 p-3 animate-in fade-in slide-in-from-top-4 duration-1000">
               <p className="text-sm text-destructive" role="alert">
                 {state.errors._form[0]}
               </p>
@@ -139,7 +140,11 @@ function LoginFormContent() {
           )}
 
           {/* Submit Button */}
-          <Button type="submit" className="w-full" disabled={pending}>
+          <Button
+            type="submit"
+            className="w-full transition-all duration-1000 ease-in-out hover:scale-105 hover:shadow-md active:scale-95"
+            disabled={pending}
+          >
             {pending ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

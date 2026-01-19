@@ -1,15 +1,29 @@
 "use client";
 
+import { useState } from "react";
 import { DataTable, type ColumnDef } from "./data-table";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import type { Employee } from "@/types/restaurant";
+import { CreateEmployeeModal } from "@/app/[locale]/employees/components/create-employee-modal";
+import type {
+  BusinessOption,
+  BranchOption,
+} from "@/app/[locale]/employees/services/employee-form-data.service";
 
 interface EmployeesTableProps {
   data: Employee[];
+  businesses?: BusinessOption[];
+  branches?: BranchOption[];
 }
 
-export function EmployeesTable({ data }: EmployeesTableProps) {
+export function EmployeesTable({
+  data,
+  businesses = [],
+  branches = [],
+}: EmployeesTableProps) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const columns: ColumnDef<Employee>[] = [
     {
       key: "name",
@@ -39,6 +53,9 @@ export function EmployeesTable({ data }: EmployeesTableProps) {
     {
       key: "phone",
       header: "Phone",
+      render: (employee) => (
+        <span className="text-sm">{employee.phone || "N/A"}</span>
+      ),
     },
     {
       key: "status",
@@ -68,15 +85,23 @@ export function EmployeesTable({ data }: EmployeesTableProps) {
   ];
 
   return (
-    <DataTable
-      title="Employees"
-      data={data}
-      columns={columns}
-      searchKey="name"
-      searchPlaceholder="Search employees..."
-      onAdd={() => console.log("Add employee")}
-      onEdit={(employee) => console.log("Edit", employee)}
-      onDelete={(employee) => console.log("Delete", employee)}
-    />
+    <>
+      <DataTable
+        title="Employees"
+        data={data}
+        columns={columns}
+        searchKey="name"
+        searchPlaceholder="Search employees..."
+        onAdd={() => setIsModalOpen(true)}
+        onEdit={(employee) => console.log("Edit", employee)}
+        onDelete={(employee) => console.log("Delete", employee)}
+      />
+      <CreateEmployeeModal
+        open={isModalOpen}
+        onOpenChange={setIsModalOpen}
+        businesses={businesses}
+        branches={branches}
+      />
+    </>
   );
 }

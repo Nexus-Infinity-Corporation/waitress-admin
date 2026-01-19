@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { OrdersTableClient } from "./orders-table-client";
-import { getOrders } from "@/services/dashboard.service";
+import { getOrders } from "../../dashboard/services/dashboard.service";
 
 export async function OrdersTable() {
   const orders = await getOrders();

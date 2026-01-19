@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getBrowserStatsData } from "@/services/dashboard.service";
+import { getBrowserStatsData } from "@/app/[locale]/dashboard/services/dashboard.service";
 
 export async function BrowserStats() {
   const browsers = await getBrowserStatsData();
@@ -19,7 +19,7 @@ export async function BrowserStats() {
               </div>
               <div className="h-2 w-full overflow-hidden rounded-full bg-secondary">
                 <div
-                  className={`h-full ${browser.color} transition-all`}
+                  className={`h-full ${browser.color} transition-all duration-1000 ease-in-out`}
                   style={{ width: `${browser.percentage}%` }}
                 />
               </div>

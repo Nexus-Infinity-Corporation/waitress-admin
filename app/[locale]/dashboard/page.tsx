@@ -9,7 +9,7 @@ import {
   AlertTriangle,
   type LucideIcon,
 } from "lucide-react";
-import { getRestaurantMetrics } from "@/services/dashboard.service";
+import { getRestaurantMetrics } from "./services/dashboard.service";
 import { getTranslations } from "next-intl/server";
 import { requireAuth } from "@/lib/auth";
 

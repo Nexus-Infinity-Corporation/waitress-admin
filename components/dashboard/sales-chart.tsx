@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SalesChartClient } from "./sales-chart-client";
-import { getSalesData } from "@/services/dashboard.service";
+import { getSalesData } from "@/app/[locale]/dashboard/services/dashboard.service";
 
 export async function SalesChart() {
   const data = await getSalesData();

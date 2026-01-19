@@ -2,12 +2,18 @@ export interface Employee {
   id: string;
   name: string;
   email: string;
-  phone: string;
-  role: "Manager" | "Waiter" | "Chef" | "Cashier" | "Admin";
+  phone: string | null;
+  role: string;
   status: "Active" | "Inactive" | "On Leave";
   hireDate: string;
   salary?: string;
   avatar?: string;
+  position?: string | null;
+  businessId?: string | null;
+  businessName?: string | null;
+  branchId?: string | null;
+  branchName?: string | null;
+  hourlyRate?: number | null;
 }
 
 export interface RestaurantClient {
@@ -49,6 +55,19 @@ export interface WarehouseItem {
   lastRestocked: string;
   supplier?: string;
   expiryDate?: string;
+}
+
+export interface Branch {
+  id: string;
+  name: string;
+  businessName: string;
+  address: string;
+  city: string;
+  phone: string;
+  status: "Active" | "Inactive";
+  openingHours: string;
+  totalEmployees: number;
+  createdAt: string;
 }
 
 export interface RestaurantMetrics {

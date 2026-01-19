@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getSocialTrafficData } from "@/services/dashboard.service";
+import { getSocialTrafficData } from "@/app/[locale]/dashboard/services/dashboard.service";
 
 export async function SocialTraffic() {
   const socialData = await getSocialTrafficData();
@@ -27,7 +27,7 @@ export async function SocialTraffic() {
               </div>
               <div className="h-2 w-full overflow-hidden rounded-full bg-secondary">
                 <div
-                  className="h-full bg-primary transition-all"
+                  className="h-full bg-primary transition-all duration-1000 ease-in-out"
                   style={{ width: `${item.percentage}%` }}
                 />
               </div>

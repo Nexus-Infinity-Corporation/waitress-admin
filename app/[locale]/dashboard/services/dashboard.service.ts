@@ -7,11 +7,11 @@ import type {
   SocialTrafficData,
   BrowserStatsData,
 } from "@/types/dashboard";
-import type { RestaurantMetrics } from "@/types/restaurant";
-import { getEmployees } from "@/services/employees.service";
-import { getClients } from "@/services/clients.service";
-import { getProducts } from "@/services/products.service";
-import { getLowStockItems } from "@/services/warehouse.service";
+import type { RestaurantMetrics } from "@/shared/types/restaurant";
+import { getEmployees } from "@/app/[locale]/employees/services/employees.service";
+import { getClients } from "@/app/[locale]/customers/services/clients.service";
+import { getProducts } from "@/app/[locale]/products/services/products.service";
+import { getLowStockItems } from "@/app/[locale]/warehouse/services/warehouse.service";
 
 export async function getMetrics(): Promise<MetricData[]> {
   // In a real app, this would fetch from an API

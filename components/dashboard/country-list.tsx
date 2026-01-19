@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getCountriesData } from "@/services/dashboard.service";
+import { getCountriesData } from "@/app/[locale]/dashboard/services/dashboard.service";
 
 export async function CountryList() {
   const countries = await getCountriesData();

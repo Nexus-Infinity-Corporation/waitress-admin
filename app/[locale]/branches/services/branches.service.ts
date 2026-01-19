@@ -1,0 +1,108 @@
+import type { Branch } from "@/shared/types/restaurant";
+
+export async function getBranches(): Promise<Branch[]> {
+  // In a real app, this would fetch from an API
+  return [
+    {
+      id: "BR-001",
+      name: "Downtown Branch",
+      businessName: "Bella Italia",
+      address: "123 Main Street",
+      city: "New York",
+      phone: "+1 234-567-9000",
+      status: "Active",
+      openingHours: "Mon-Sun: 10:00 AM - 10:00 PM",
+      totalEmployees: 15,
+      createdAt: "2023-01-10",
+    },
+    {
+      id: "BR-002",
+      name: "Westside Branch",
+      businessName: "Bella Italia",
+      address: "456 Oak Avenue",
+      city: "New York",
+      phone: "+1 234-567-9001",
+      status: "Active",
+      openingHours: "Mon-Sun: 11:00 AM - 11:00 PM",
+      totalEmployees: 12,
+      createdAt: "2023-02-15",
+    },
+    {
+      id: "BR-003",
+      name: "Main Branch",
+      businessName: "Sakura Sushi",
+      address: "789 Pine Road",
+      city: "Los Angeles",
+      phone: "+1 234-567-9002",
+      status: "Active",
+      openingHours: "Mon-Sat: 12:00 PM - 10:00 PM",
+      totalEmployees: 18,
+      createdAt: "2023-03-20",
+    },
+    {
+      id: "BR-004",
+      name: "Airport Branch",
+      businessName: "Sakura Sushi",
+      address: "321 Elm Street",
+      city: "Los Angeles",
+      phone: "+1 234-567-9003",
+      status: "Active",
+      openingHours: "Mon-Sun: 6:00 AM - 11:00 PM",
+      totalEmployees: 20,
+      createdAt: "2022-12-05",
+    },
+    {
+      id: "BR-005",
+      name: "Central Branch",
+      businessName: "Taco Fiesta",
+      address: "654 Maple Drive",
+      city: "Chicago",
+      phone: "+1 234-567-9004",
+      status: "Active",
+      openingHours: "Mon-Sun: 9:00 AM - 9:00 PM",
+      totalEmployees: 10,
+      createdAt: "2023-04-10",
+    },
+    {
+      id: "BR-006",
+      name: "North Branch",
+      businessName: "Taco Fiesta",
+      address: "987 Cedar Lane",
+      city: "Chicago",
+      phone: "+1 234-567-9005",
+      status: "Inactive",
+      openingHours: "Mon-Sun: 10:00 AM - 8:00 PM",
+      totalEmployees: 8,
+      createdAt: "2023-05-15",
+    },
+    {
+      id: "BR-007",
+      name: "Flagship Branch",
+      businessName: "Burger House",
+      address: "147 Birch Boulevard",
+      city: "Houston",
+      phone: "+1 234-567-9006",
+      status: "Active",
+      openingHours: "Mon-Sun: 11:00 AM - 10:00 PM",
+      totalEmployees: 14,
+      createdAt: "2023-06-20",
+    },
+    {
+      id: "BR-008",
+      name: "Beach Branch",
+      businessName: "Pizza Palace",
+      address: "258 Ocean Avenue",
+      city: "Miami",
+      phone: "+1 234-567-9007",
+      status: "Active",
+      openingHours: "Mon-Sun: 12:00 PM - 11:00 PM",
+      totalEmployees: 16,
+      createdAt: "2023-07-25",
+    },
+  ];
+}
+
+export async function getBranchById(id: string): Promise<Branch | null> {
+  const branches = await getBranches();
+  return branches.find((branch) => branch.id === id) || null;
+}
