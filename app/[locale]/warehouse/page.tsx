@@ -1,12 +1,12 @@
 import { HorizontalHeader } from "@/components/dashboard/horizontal-header";
 import { WarehouseTable } from "./components/warehouse-table";
 import { getWarehouseItems } from "./services/warehouse.service";
-import { requireAuth } from "@/lib/auth";
+
+// Cache this page for 1 hour since it uses mocked data
+export const revalidate = 3600;
 
 export default async function WarehousePage() {
-  // Ensure user is authenticated (fallback check)
-  await requireAuth("/warehouse");
-
+  // Authentication is handled by middleware (proxy.ts)
   const items = await getWarehouseItems();
 
   return (

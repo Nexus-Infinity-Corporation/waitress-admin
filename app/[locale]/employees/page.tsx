@@ -2,7 +2,6 @@ import { Suspense } from "react";
 import { HorizontalHeader } from "@/components/dashboard/horizontal-header";
 import { EmployeesTable } from "./components/employees-table";
 import { getEmployees } from "./services/employees.service";
-import { requireAuth } from "@/lib/auth";
 import {
   getBusinesses,
   getBranches,
@@ -26,8 +25,7 @@ async function EmployeesTableWrapper() {
 }
 
 export default async function EmployeesPage() {
-  // Ensure user is authenticated (fallback check)
-  await requireAuth("/employees");
+  // Authentication is handled by middleware (proxy.ts)
 
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-background">

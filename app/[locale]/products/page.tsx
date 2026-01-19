@@ -1,12 +1,12 @@
 import { HorizontalHeader } from "@/components/dashboard/horizontal-header";
 import { ProductsTable } from "./components/products-table";
 import { getProducts } from "./services/products.service";
-import { requireAuth } from "@/lib/auth";
+
+// Cache this page for 1 hour since it uses mocked data
+export const revalidate = 3600;
 
 export default async function ProductsPage() {
-  // Ensure user is authenticated (fallback check)
-  await requireAuth("/products");
-
+  // Authentication is handled by middleware (proxy.ts)
   const products = await getProducts();
 
   return (

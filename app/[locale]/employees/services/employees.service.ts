@@ -121,97 +121,89 @@ export async function getEmployees(): Promise<Employee[]> {
 
     const userIds = users.map((user) => user.id);
 
-    // Fetch employee roles
-    const { data: employeeRoles, error: rolesError } = await supabase
-      .from("employee_roles")
-      .select("*")
-      .in("user_id", userIds)
-      .eq("is_active", true);
-
-    if (rolesError) {
-      console.error("Error fetching employee roles:", rolesError);
-      // Continue without roles
-    }
-
-    // Fetch employee assignments
-    const { data: employeeAssignments, error: assignmentsError } =
-      await supabase
+    // Fetch employee roles and assignments in parallel
+    const [employeeRolesResult, employeeAssignmentsResult] = await Promise.all([
+      supabase
+        .from("employee_roles")
+        .select("*")
+        .in("user_id", userIds)
+        .eq("is_active", true),
+      supabase
         .from("employee_assignments")
         .select("*")
         .in("user_id", userIds)
-        .eq("is_active", true);
+        .eq("is_active", true),
+    ]);
 
-    if (assignmentsError) {
-      console.error("Error fetching employee assignments:", assignmentsError);
-      // Continue without assignments
+    const employeeRoles = employeeRolesResult.data || [];
+    const employeeAssignments = employeeAssignmentsResult.data || [];
+
+    if (employeeRolesResult.error) {
+      console.error(
+        "Error fetching employee roles:",
+        employeeRolesResult.error
+      );
     }
 
-    // Get unique role IDs from assignments
+    if (employeeAssignmentsResult.error) {
+      console.error(
+        "Error fetching employee assignments:",
+        employeeAssignmentsResult.error
+      );
+    }
+
+    // Get unique IDs for related data
     const roleIds = [
       ...new Set(
-        (employeeAssignments || [])
+        employeeAssignments
           .map((a) => a.role_id)
           .filter((id): id is number => id !== null)
       ),
     ];
 
-    // Fetch roles if we have role IDs
-    let roles: DatabaseRole[] = [];
-    if (roleIds.length > 0) {
-      const { data: rolesData, error: rolesDataError } = await supabase
-        .from("roles")
-        .select("*")
-        .in("id", roleIds);
-
-      if (!rolesDataError && rolesData) {
-        roles = rolesData;
-      }
-    }
-
-    // Get unique business IDs
     const businessIds = [
       ...new Set(
         [
-          ...(employeeRoles || []).map((r) => r.business_id),
-          ...(employeeAssignments || []).map((a) => a.business_id),
+          ...employeeRoles.map((r) => r.business_id),
+          ...employeeAssignments.map((a) => a.business_id),
         ].filter((id): id is string => id !== null)
       ),
     ];
 
-    // Fetch businesses if we have business IDs
-    let businesses: DatabaseBusiness[] = [];
-    if (businessIds.length > 0) {
-      const { data: businessesData, error: businessesError } = await supabase
-        .from("business")
-        .select("*")
-        .in("id", businessIds);
-
-      if (!businessesError && businessesData) {
-        businesses = businessesData;
-      }
-    }
-
-    // Get unique branch IDs
     const branchIds = [
       ...new Set(
         [
-          ...(employeeRoles || []).map((r) => r.branch_id),
-          ...(employeeAssignments || []).map((a) => a.branch_id),
+          ...employeeRoles.map((r) => r.branch_id),
+          ...employeeAssignments.map((a) => a.branch_id),
         ].filter((id): id is string => id !== null)
       ),
     ];
 
-    // Fetch branches if we have branch IDs
-    let branches: DatabaseBranch[] = [];
-    if (branchIds.length > 0) {
-      const { data: branchesData, error: branchesError } = await supabase
-        .from("branches")
-        .select("*")
-        .in("id", branchIds);
+    // Fetch all related data in parallel
+    const [rolesResult, businessesResult, branchesResult] = await Promise.all([
+      roleIds.length > 0
+        ? supabase.from("roles").select("*").in("id", roleIds)
+        : Promise.resolve({ data: [], error: null }),
+      businessIds.length > 0
+        ? supabase.from("business").select("*").in("id", businessIds)
+        : Promise.resolve({ data: [], error: null }),
+      branchIds.length > 0
+        ? supabase.from("branches").select("*").in("id", branchIds)
+        : Promise.resolve({ data: [], error: null }),
+    ]);
 
-      if (!branchesError && branchesData) {
-        branches = branchesData;
-      }
+    const roles: DatabaseRole[] = rolesResult.data || [];
+    const businesses: DatabaseBusiness[] = businessesResult.data || [];
+    const branches: DatabaseBranch[] = branchesResult.data || [];
+
+    if (rolesResult.error) {
+      console.error("Error fetching roles:", rolesResult.error);
+    }
+    if (businessesResult.error) {
+      console.error("Error fetching businesses:", businessesResult.error);
+    }
+    if (branchesResult.error) {
+      console.error("Error fetching branches:", branchesResult.error);
     }
 
     // Map users to employees with related data

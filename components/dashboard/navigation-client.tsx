@@ -54,7 +54,7 @@ export function NavigationClient({ items }: NavigationClientProps) {
         const isActive = pathname === item.href;
         return (
           <Link
-            key={item.href}
+            key={item.title}
             href={item.href}
             className={cn(
               "flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all duration-1000 ease-in-out whitespace-nowrap hover:scale-105",

@@ -1,12 +1,12 @@
 import { HorizontalHeader } from "@/components/dashboard/horizontal-header";
 import { ClientsTable } from "./components/clients-table";
 import { getClients } from "./services/clients.service";
-import { requireAuth } from "@/lib/auth";
+
+// Cache this page for 1 hour since it uses mocked data
+export const revalidate = 3600;
 
 export default async function ClientsPage() {
-  // Ensure user is authenticated (fallback check)
-  await requireAuth("/clients");
-
+  // Authentication is handled by middleware (proxy.ts)
   const clients = await getClients();
 
   return (
