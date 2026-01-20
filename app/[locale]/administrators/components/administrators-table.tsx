@@ -1,14 +1,18 @@
 "use client";
 
+import { useState } from "react";
 import { DataTable, type ColumnDef } from "@/components/data-table";
 import { Badge } from "@/components/ui/badge";
 import { Administrator } from "@/app/[locale]/administrators/types/administrator";
+import { ModalAdministrator } from "./ModalAdministrator";
 
 interface AdministratorsTableProps {
   data: Administrator[];
 }
 
 export function AdministratorsTable({ data }: AdministratorsTableProps) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const columns: ColumnDef<Administrator>[] = [
     {
       key: "name",
@@ -43,37 +47,33 @@ export function AdministratorsTable({ data }: AdministratorsTableProps) {
       render: (administrator) => (
         <Badge
           variant={
-            administrator.status === "Active"
+            administrator.status === "active"
               ? "success"
-              : administrator.status === "Suspended"
+              : administrator.status === "suspended"
                 ? "warning"
                 : "destructive"
           }
         >
-          {administrator.status}
+          {administrator.status.charAt(0).toUpperCase() +
+            administrator.status.slice(1)}
         </Badge>
       ),
-    },
-    {
-      key: "totalOrders",
-      header: "Orders",
-    },
-    {
-      key: "totalSpent",
-      header: "Total Spent",
     },
   ];
 
   return (
-    <DataTable
-      title="Administrators and Brand Owners"
-      data={data}
-      columns={columns}
-      searchKey="name"
-      searchPlaceholder="Search administrators and brand owners..."
-      onAdd={() => console.log("Add administrator and brand owner")}
-      onEdit={(administrator) => console.log("Edit", administrator)}
-      onDelete={(administrator) => console.log("Delete", administrator)}
-    />
+    <>
+      <DataTable
+        title="Administrators and Brand Owners"
+        data={data}
+        columns={columns}
+        searchKey="name"
+        searchPlaceholder="Search administrators and brand owners..."
+        onAdd={() => setIsModalOpen(true)}
+        onEdit={(administrator) => console.log("Edit", administrator)}
+        onDelete={(administrator) => console.log("Delete", administrator)}
+      />
+      <ModalAdministrator open={isModalOpen} onOpenChange={setIsModalOpen} />
+    </>
   );
 }

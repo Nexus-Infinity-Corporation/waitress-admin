@@ -5,7 +5,7 @@ import { getAdministrators } from "./services/administrators.service";
 // Cache this page for 1 hour since it uses mocked data
 export const revalidate = 3600;
 
-export default async function ClientsPage() {
+export default async function AdministratorPage() {
   // Authentication is handled by middleware (proxy.ts)
   const administrators = await getAdministrators();
 

@@ -5,7 +5,7 @@ export interface Administrator {
   email: string;
   phone: string;
   role: string;
-  status: "Active" | "Inactive" | "Suspended";
+  status: "active" | "inactive" | "suspended";
   is_active: boolean;
   created_at: string;
   updated_at: string;
