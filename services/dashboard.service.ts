@@ -8,7 +8,7 @@ import type {
   BrowserStatsData,
 } from "@/types/dashboard";
 import type { RestaurantMetrics } from "@/types/restaurant";
-import { getEmployees } from "./employees.service";
+import { getCachedEmployees } from "./employees.service";
 import { getClients } from "./clients.service";
 import { getProducts } from "./products.service";
 import { getLowStockItems } from "./warehouse.service";
@@ -46,7 +46,7 @@ export async function getMetrics(): Promise<MetricData[]> {
 export async function getRestaurantMetrics(): Promise<RestaurantMetrics> {
   // Run all fetches in parallel for better performance
   const [employees, clients, products, lowStockItems] = await Promise.all([
-    getEmployees(),
+    getCachedEmployees(),
     getClients(),
     getProducts(),
     getLowStockItems(),

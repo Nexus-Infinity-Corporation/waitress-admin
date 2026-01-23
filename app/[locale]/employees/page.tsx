@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { HorizontalHeader } from "@/components/dashboard/horizontal-header";
 import { EmployeesTable } from "./components/employees-table";
-import { getEmployees } from "./services/employees.service";
+import { getCachedEmployees } from "./services/employees.service";
 import {
   getBusinesses,
   getBranches,
@@ -9,11 +9,7 @@ import {
 import { EmployeesTableSkeleton } from "@/components/dashboard/employees-table-skeleton";
 
 async function EmployeesTableWrapper() {
-  const [employees, businesses, branches] = await Promise.all([
-    getEmployees(),
-    getBusinesses(),
-    getBranches(),
-  ]);
+  const employees = await getCachedEmployees();
 
   return (
     <EmployeesTable

@@ -1,6 +1,5 @@
 export interface Administrator {
-  id: string;
-  user_id: string;
+  id: string; // Same ID as users.id and auth.users.id
   name: string;
   email: string;
   phone: string;

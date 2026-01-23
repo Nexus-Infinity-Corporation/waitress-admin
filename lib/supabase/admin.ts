@@ -1,16 +1,20 @@
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import { createClient, SupabaseClient } from "@supabase/supabase-js";
 import { withSupabaseQueue } from "./request-queue";
+
+/**
+ * Global admin client instance (singleton pattern)
+ * This prevents connection pool exhaustion by reusing the same client instance
+ */
+let adminClient: SupabaseClient | null = null;
 
 /**
  * Custom fetch implementation with connection pooling and aggressive retry logic
  * This helps prevent 503 errors by properly managing HTTP connections
  *
  * Implements exponential backoff retry strategy for 503 errors:
- * - Retry up to 5 times (6 total attempts)
- * - Exponential backoff: 2s, 4s, 8s, 16s, 32s
- * - Total max wait: ~62 seconds before giving up
- * - All requests are queued through globalSupabaseQueue to limit concurrency
+ * - Retry up to 3 times
+ * - Exponential backoff: 1s, 2s, 4s
+ * - Total max wait: ~7 seconds before giving up
  */
 function createFetchWithPooling(): typeof fetch {
   const MAX_RETRIES = 5; // Increased from 3 to 5
@@ -66,7 +70,7 @@ function createFetchWithPooling(): typeof fetch {
           // Exponential backoff: 2s, 4s, 8s, 16s, 32s (total ~62s max wait)
           const delay = INITIAL_RETRY_DELAY * Math.pow(2, attempt);
           console.warn(
-            `[Supabase Server] Received 503 (attempt ${attempt + 1}/${MAX_RETRIES + 1}), ` +
+            `[Supabase Admin] Received 503 (attempt ${attempt + 1}/${MAX_RETRIES + 1}), ` +
               `retrying in ${delay}ms... (${url})`
           );
 
@@ -77,7 +81,7 @@ function createFetchWithPooling(): typeof fetch {
           // Last attempt failed
           clearTimeout(timeoutId);
           console.error(
-            `[Supabase Server] All ${MAX_RETRIES + 1} attempts failed with 503 error (${url})`
+            `[Supabase Admin] All ${MAX_RETRIES + 1} attempts failed with 503 error (${url})`
           );
           return response; // Return the 503 response
         }
@@ -98,7 +102,7 @@ function createFetchWithPooling(): typeof fetch {
         lastError = error instanceof Error ? error : new Error(String(error));
         const delay = INITIAL_RETRY_DELAY * Math.pow(2, attempt);
         console.warn(
-          `[Supabase Server] Request error (attempt ${attempt + 1}/${MAX_RETRIES + 1}), ` +
+          `[Supabase Admin] Request error (attempt ${attempt + 1}/${MAX_RETRIES + 1}), ` +
             `retrying in ${delay}ms... (${url})`
         );
         await new Promise((resolve) => setTimeout(resolve, delay));
@@ -111,46 +115,73 @@ function createFetchWithPooling(): typeof fetch {
 }
 
 /**
- * Creates a Supabase client for server-side operations
- * This client properly handles cookies for authentication in Next.js App Router
+ * Creates or returns the singleton Supabase admin client with service role/secret key
+ * This client bypasses Row-Level Security (RLS) policies
  *
- * Includes connection pooling configuration to prevent 503 errors
+ * ⚠️ WARNING: Only use this for server-side admin operations
+ * Never expose the service role/secret key in client-side code
+ *
+ * Uses singleton pattern to prevent connection pool exhaustion (503 errors)
+ *
+ * @returns Supabase admin client (singleton instance)
+ * @throws Error if service role key is not configured
  */
-export async function createClient() {
-  const cookieStore = await cookies();
+export function createAdminClient(): SupabaseClient {
+  // Return existing client if already created (singleton pattern)
+  if (adminClient) {
+    return adminClient;
+  }
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_KEY;
 
-  if (!supabaseAnonKey) {
-    throw new Error("NEXT_PUBLIC_SUPABASE_KEY environment variable is not set");
+  // Support both new (SUPABASE_SECRET_KEY) and legacy (SUPABASE_SERVICE_ROLE_KEY) naming
+  const serviceRoleKey =
+    process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!serviceRoleKey) {
+    throw new Error(
+      "SUPABASE_SECRET_KEY or SUPABASE_SERVICE_ROLE_KEY environment variable is not set. " +
+        "Admin operations require a service role key."
+    );
   }
 
   if (!supabaseUrl) {
     throw new Error("NEXT_PUBLIC_SUPABASE_URL environment variable is not set");
   }
 
-  return createServerClient(supabaseUrl, supabaseAnonKey, {
-    cookies: {
-      getAll() {
-        return cookieStore.getAll();
-      },
-      setAll(cookiesToSet) {
-        try {
-          cookiesToSet.forEach(({ name, value, options }) =>
-            cookieStore.set(name, value, options)
-          );
-        } catch {
-          // The `setAll` method was called from a Server Component.
-          // This can be ignored if you have middleware refreshing
-          // user sessions.
-        }
-      },
+  // Create singleton client with connection pooling configuration
+  adminClient = createClient(supabaseUrl, serviceRoleKey, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
     },
     global: {
       // Use custom fetch with connection pooling and retry logic
       // Note: We don't set global.headers here to avoid overriding Supabase's API key headers
       fetch: createFetchWithPooling(),
     },
+    db: {
+      schema: "public",
+    },
   });
+
+  return adminClient;
+}
+
+/**
+ * Wraps admin client operations in the global request queue to limit concurrent requests
+ * This prevents overwhelming the connection pool with too many simultaneous requests
+ *
+ * Note: The fetch layer already queues requests, but this provides an additional
+ * layer of control for complex operations that make multiple queries.
+ *
+ * @param operation Function that performs the Supabase operation
+ * @returns Result of the operation
+ */
+export async function withAdminClient<T>(
+  operation: (client: SupabaseClient) => Promise<T>
+): Promise<T> {
+  const client = createAdminClient();
+  // Use global queue (fetch is already queued, but this adds extra safety for multi-query operations)
+  return withSupabaseQueue(() => operation(client));
 }

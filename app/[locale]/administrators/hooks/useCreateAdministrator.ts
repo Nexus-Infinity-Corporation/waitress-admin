@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { createAdministratorAction } from "../services/create-administrator.service";
 
 const initialState: { errors?: Record<string, string[]>; message?: string } = {
@@ -17,6 +17,16 @@ export function useCreateAdministrator() {
     createAdministratorAction,
     initialState
   );
+
+  // Log state changes
+  useEffect(() => {
+    console.log("🔄 [HOOK] useActionState state changed:", {
+      hasMessage: !!state?.message,
+      hasErrors: !!state?.errors,
+      pending,
+      stateKeys: state ? Object.keys(state) : [],
+    });
+  }, [state, pending]);
 
   return {
     state,

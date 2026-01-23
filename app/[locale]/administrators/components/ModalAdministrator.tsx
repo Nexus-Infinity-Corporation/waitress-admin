@@ -21,11 +21,6 @@ interface ModalAdministratorProps {
   onOpenChange: (open: boolean) => void;
 }
 
-const initialState = {
-  errors: undefined,
-  message: undefined,
-};
-
 export function ModalAdministrator({
   open,
   onOpenChange,
@@ -35,9 +30,40 @@ export function ModalAdministrator({
 
   const [showPassword, setShowPassword] = useState(false);
 
+  // Log state changes
+  useEffect(() => {
+    console.log("🔄 [CLIENT] State changed:", {
+      hasMessage: !!state?.message,
+      hasErrors: !!state?.errors,
+      pending,
+      state,
+    });
+
+    // Log detailed error information
+    if (state?.errors) {
+      console.error(
+        "❌ [CLIENT] Errors detected:",
+        JSON.stringify(state.errors, null, 2)
+      );
+      if (state.errors._form) {
+        console.error("❌ [CLIENT] Form errors:", state.errors._form);
+      }
+      // Log all error keys
+      Object.keys(state.errors).forEach((key) => {
+        if (key !== "_form") {
+          console.error(
+            `❌ [CLIENT] Field error [${key}]:`,
+            state.errors![key]
+          );
+        }
+      });
+    }
+  }, [state, pending]);
+
   // Close modal on successful creation
   useEffect(() => {
     if (state?.message && !pending) {
+      console.log("✅ [CLIENT] Success detected, closing modal...");
       startTransition(() => {
         setTimeout(() => {
           onOpenChange(false);
@@ -49,7 +75,24 @@ export function ModalAdministrator({
   }, [state?.message, pending, onOpenChange]);
 
   const handleSubmit = (formData: FormData) => {
-    startTransition(() => createAdministratorAction(formData));
+    console.log(
+      "🔄 [CLIENT] Form submitted, starting administrator creation..."
+    );
+    console.log("🔄 [CLIENT] Form data:", {
+      firstName: formData.get("firstName"),
+      lastName: formData.get("lastName"),
+      email: formData.get("email"),
+      phone: formData.get("phone"),
+      role: formData.get("role"),
+      password: formData.get("password") ? "***" : "missing",
+    });
+    console.log("🔄 [CLIENT] Current state before submission:", state);
+    console.log("🔄 [CLIENT] Pending state:", pending);
+
+    startTransition(() => {
+      console.log("🔄 [CLIENT] Inside startTransition, calling formAction...");
+      createAdministratorAction(formData);
+    });
   };
 
   return (
@@ -158,19 +201,22 @@ export function ModalAdministrator({
                   </p>
                 )}
               </div>
-
               <div className="space-y-2">
-                <Label htmlFor="username">Username</Label>
-                <Input
-                  id="username"
-                  name="username"
-                  placeholder="johndoe"
+                <Label htmlFor="role">Role</Label>
+                <select
+                  id="role"
+                  name="role"
+                  defaultValue="administrator"
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-1000 ease-in-out focus:scale-[1.02] focus:shadow-md"
                   disabled={pending}
-                  aria-invalid={state?.errors?.username ? "true" : "false"}
-                />
-                {state?.errors?.username && (
+                >
+                  <option value="administrator">Administrator</option>
+                  <option value="brand_owner">Brand Owner</option>
+                  <option value="super_admin">Super Admin</option>
+                </select>
+                {state?.errors?.role && (
                   <p className="text-sm text-destructive" role="alert">
-                    {state.errors.username[0]}
+                    {state.errors.role[0]}
                   </p>
                 )}
               </div>
@@ -215,26 +261,6 @@ export function ModalAdministrator({
                   role="alert"
                 >
                   {state.errors.password[0]}
-                </p>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="role">Role</Label>
-              <select
-                id="role"
-                name="role"
-                defaultValue="administrator"
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-1000 ease-in-out focus:scale-[1.02] focus:shadow-md"
-                disabled={pending}
-              >
-                <option value="administrator">Administrator</option>
-                <option value="brand_owner">Brand Owner</option>
-                <option value="super_admin">Super Admin</option>
-              </select>
-              {state?.errors?.role && (
-                <p className="text-sm text-destructive" role="alert">
-                  {state.errors.role[0]}
                 </p>
               )}
             </div>
