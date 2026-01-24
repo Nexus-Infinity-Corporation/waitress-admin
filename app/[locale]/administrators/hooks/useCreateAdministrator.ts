@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useEffect } from "react";
-import { createAdministratorAction } from "../services/create-administrator.service";
+import { createAdministratorAction } from "@/app/[locale]/administrators/services/create-administrator.service";
 
 const initialState: { errors?: Record<string, string[]>; message?: string } = {
   errors: undefined,
