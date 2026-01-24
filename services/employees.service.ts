@@ -1,3 +1,4 @@
+import { cache } from "react";
 import type { Employee } from "@/types/restaurant";
 import { createClient } from "@/lib/supabase/server";
 import { User } from "@supabase/supabase-js";
@@ -417,3 +418,19 @@ export async function updateUser(user: User) {
   }
   return data;
 }
+
+/**
+ * Cached version of getEmployees
+ * Uses React's cache() to deduplicate requests within the same render cycle
+ * This prevents multiple duplicate requests to Supabase during page load
+ *
+ * Cache is automatically cleared between requests, preventing stale data
+ */
+export const getCachedEmployees = cache(getEmployees);
+
+/**
+ * Cached version of getEmployeeById
+ * Uses React's cache() to deduplicate requests within the same render cycle
+ * This prevents multiple duplicate requests to Supabase for the same employee
+ */
+export const getCachedEmployeeById = cache(getEmployeeById);

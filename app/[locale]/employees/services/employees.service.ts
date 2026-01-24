@@ -1,3 +1,4 @@
+import { cache } from "react";
 import type { Employee } from "@/shared/types/restaurant";
 import { createClient } from "@/lib/supabase/server";
 import type {
@@ -103,12 +104,51 @@ export async function getEmployees(): Promise<Employee[]> {
   const supabase = await createClient();
 
   try {
-    // First, get all users with user_type = 'employee'
-    const { data: users, error: usersError } = await supabase
-      .from("users")
-      .select("*")
-      .eq("user_type", "employee")
-      .order("created_at", { ascending: false });
+    // First, get all user IDs that have employee_roles or employee_assignments
+    // This identifies employees (since user_type column doesn't exist)
+    const [employeeRolesCheck, employeeAssignmentsCheck] = await Promise.all([
+      supabase.from("employee_roles").select("user_id").eq("is_active", true),
+      supabase
+        .from("employee_assignments")
+        .select("user_id")
+        .eq("is_active", true),
+    ]);
+
+    const employeeRoleUserIds =
+      employeeRolesCheck.data?.map((er) => er.user_id) || [];
+    const employeeAssignmentUserIds =
+      employeeAssignmentsCheck.data?.map((ea) => ea.user_id) || [];
+
+    // Get unique user IDs that have employee records
+    const userIds = [
+      ...new Set([...employeeRoleUserIds, ...employeeAssignmentUserIds]),
+    ];
+
+    if (userIds.length === 0) {
+      return [];
+    }
+
+    // Fetch users, employee roles, and assignments in parallel
+    const [usersResult, employeeRolesResult, employeeAssignmentsResult] =
+      await Promise.all([
+        supabase
+          .from("users")
+          .select("*")
+          .in("id", userIds)
+          .order("created_at", { ascending: false }),
+        supabase
+          .from("employee_roles")
+          .select("*")
+          .in("user_id", userIds)
+          .eq("is_active", true),
+        supabase
+          .from("employee_assignments")
+          .select("*")
+          .in("user_id", userIds)
+          .eq("is_active", true),
+      ]);
+
+    const { data: users, error: usersError } = usersResult;
 
     if (usersError) {
       console.error("Error fetching users:", usersError);
@@ -119,24 +159,10 @@ export async function getEmployees(): Promise<Employee[]> {
       return [];
     }
 
-    const userIds = users.map((user) => user.id);
-
-    // Fetch employee roles and assignments in parallel
-    const [employeeRolesResult, employeeAssignmentsResult] = await Promise.all([
-      supabase
-        .from("employee_roles")
-        .select("*")
-        .in("user_id", userIds)
-        .eq("is_active", true),
-      supabase
-        .from("employee_assignments")
-        .select("*")
-        .in("user_id", userIds)
-        .eq("is_active", true),
-    ]);
-
-    const employeeRoles = employeeRolesResult.data || [];
-    const employeeAssignments = employeeAssignmentsResult.data || [];
+    const employeeRoles: DatabaseEmployeeRole[] =
+      employeeRolesResult.data || [];
+    const employeeAssignments: DatabaseEmployeeAssignment[] =
+      employeeAssignmentsResult.data || [];
 
     if (employeeRolesResult.error) {
       console.error(
@@ -251,12 +277,33 @@ export async function getEmployeeById(id: string): Promise<Employee | null> {
   const supabase = await createClient();
 
   try {
+    // Check if user has employee records (employee_roles or employee_assignments)
+    // This identifies employees (since user_type column doesn't exist)
+    const [employeeRoleCheck, employeeAssignmentCheck] = await Promise.all([
+      supabase
+        .from("employee_roles")
+        .select("user_id")
+        .eq("user_id", id)
+        .eq("is_active", true)
+        .maybeSingle(),
+      supabase
+        .from("employee_assignments")
+        .select("user_id")
+        .eq("user_id", id)
+        .eq("is_active", true)
+        .maybeSingle(),
+    ]);
+
+    // If user has no employee records, they're not an employee
+    if (!employeeRoleCheck.data && !employeeAssignmentCheck.data) {
+      return null;
+    }
+
     // Get user
     const { data: user, error: userError } = await supabase
       .from("users")
       .select("*")
       .eq("id", id)
-      .eq("user_type", "employee")
       .single();
 
     if (userError || !user) {
@@ -328,3 +375,19 @@ export async function getEmployeeById(id: string): Promise<Employee | null> {
     return null;
   }
 }
+
+/**
+ * Cached version of getEmployees
+ * Uses React's cache() to deduplicate requests within the same render cycle
+ * This prevents multiple duplicate requests to Supabase during page load
+ *
+ * Cache is automatically cleared between requests, preventing stale data
+ */
+export const getCachedEmployees = cache(getEmployees);
+
+/**
+ * Cached version of getEmployeeById
+ * Uses React's cache() to deduplicate requests within the same render cycle
+ * This prevents multiple duplicate requests to Supabase for the same employee
+ */
+export const getCachedEmployeeById = cache(getEmployeeById);

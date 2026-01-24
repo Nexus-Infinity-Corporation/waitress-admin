@@ -8,7 +8,7 @@ import type {
   BrowserStatsData,
 } from "@/types/dashboard";
 import type { RestaurantMetrics } from "@/shared/types/restaurant";
-import { getEmployees } from "@/app/[locale]/employees/services/employees.service";
+import { getCachedEmployees } from "@/app/[locale]/employees/services/employees.service";
 import { getClients } from "@/app/[locale]/customers/services/clients.service";
 import { getProducts } from "@/app/[locale]/products/services/products.service";
 import { getLowStockItems } from "@/app/[locale]/warehouse/services/warehouse.service";
@@ -44,7 +44,7 @@ export async function getMetrics(): Promise<MetricData[]> {
 }
 
 export async function getRestaurantMetrics(): Promise<RestaurantMetrics> {
-  const employees = await getEmployees();
+  const employees = await getCachedEmployees();
   const clients = await getClients();
   const products = await getProducts();
   const lowStockItems = await getLowStockItems();

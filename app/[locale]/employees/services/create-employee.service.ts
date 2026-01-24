@@ -45,124 +45,35 @@ export async function createEmployeeAction(
   const supabase = await createClient();
 
   try {
-    // Step 1: Create user in Supabase Auth
-    // Try using admin API first (requires service role key), fallback to signUp
-    let userId: string | undefined;
-    let authError: Error | null = null;
+    // Step 1: Create user in Supabase Auth and users table using shared service
+    const { createUser } = await import("@/services/users.service");
 
-    // Check if we have service role key for admin API
-    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-    if (serviceRoleKey) {
-      // Use admin API with service role key
-      const { createClient: createAdminClient } =
-        await import("@supabase/supabase-js");
-      const supabaseAdmin = createAdminClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        serviceRoleKey
-      );
-
-      const { data: authData, error: adminError } =
-        await supabaseAdmin.auth.admin.createUser({
-          email,
-          password,
-          email_confirm: true, // Auto-confirm email for admin-created users
-          user_metadata: {
-            first_name: firstName,
-            last_name: lastName,
-            username: username || email.split("@")[0],
-          },
-        });
-
-      if (adminError || !authData.user) {
-        authError = new Error(
-          adminError?.message || "Failed to create user account"
-        );
-      } else {
-        userId = authData.user.id;
-      }
-    } else {
-      // Fallback to regular signUp (requires email confirmation unless disabled in Supabase settings)
-      const { data: authData, error: signUpError } = await supabase.auth.signUp(
-        {
-          email,
-          password,
-          options: {
-            data: {
-              first_name: firstName,
-              last_name: lastName,
-              username: username || email.split("@")[0],
-            },
-          },
-        }
-      );
-
-      if (signUpError || !authData.user) {
-        authError = new Error(
-          signUpError?.message || "Failed to create user account"
-        );
-      } else {
-        userId = authData.user.id;
-      }
-    }
-
-    if (authError) {
+    let userResult: { userId: string; email: string };
+    try {
+      userResult = await createUser({
+        firstName,
+        lastName,
+        email,
+        password,
+        phone,
+        username,
+        userType: "employee",
+        address,
+        age,
+      });
+    } catch (userError) {
       return {
         errors: {
-          _form: [authError.message],
+          _form: [
+            userError instanceof Error
+              ? userError.message
+              : "Failed to create user account",
+          ],
         },
       };
     }
 
-    // Ensure userId is defined (TypeScript guard)
-    if (!userId) {
-      return {
-        errors: {
-          _form: ["Failed to create user account: User ID not available"],
-        },
-      };
-    }
-
-    // TypeScript now knows userId is defined, assign to const for clarity
-    const finalUserId: string = userId;
-
-    // Step 2: Create user record in users table
-    const { error: userError } = await supabase.from("users").insert({
-      id: finalUserId,
-      first_name: firstName,
-      last_name: lastName || null,
-      email,
-      phone: phone || null,
-      username: username || null,
-      user_type: "employee",
-      is_active: true,
-      address: address || null,
-      age: age || null,
-    });
-
-    if (userError) {
-      // If user creation fails, try to clean up auth user (only if we have admin access)
-      const serviceRoleKey: string | undefined =
-        process.env.SUPABASE_SERVICE_ROLE_KEY;
-      if (serviceRoleKey) {
-        try {
-          const { createClient: createAdminClient } =
-            await import("@supabase/supabase-js");
-          const supabaseAdmin = createAdminClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            serviceRoleKey
-          );
-          await supabaseAdmin.auth.admin.deleteUser(finalUserId);
-        } catch (cleanupError) {
-          console.error("Failed to cleanup auth user:", cleanupError);
-        }
-      }
-      return {
-        errors: {
-          _form: [userError.message || "Failed to create user record"],
-        },
-      };
-    }
+    const finalUserId = userResult.userId;
 
     // Step 3: Create employee_role if role or position is provided
     if (role || position || businessId || branchId) {
