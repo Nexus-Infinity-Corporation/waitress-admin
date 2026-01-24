@@ -18,16 +18,6 @@ export function useCreateAdministrator() {
     initialState
   );
 
-  // Log state changes
-  useEffect(() => {
-    console.log("🔄 [HOOK] useActionState state changed:", {
-      hasMessage: !!state?.message,
-      hasErrors: !!state?.errors,
-      pending,
-      stateKeys: state ? Object.keys(state) : [],
-    });
-  }, [state, pending]);
-
   return {
     state,
     createAdministratorAction: formAction,

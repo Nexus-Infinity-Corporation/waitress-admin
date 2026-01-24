@@ -30,36 +30,6 @@ export function ModalAdministrator({
 
   const [showPassword, setShowPassword] = useState(false);
 
-  // Log state changes
-  useEffect(() => {
-    console.log("🔄 [CLIENT] State changed:", {
-      hasMessage: !!state?.message,
-      hasErrors: !!state?.errors,
-      pending,
-      state,
-    });
-
-    // Log detailed error information
-    if (state?.errors) {
-      console.error(
-        "❌ [CLIENT] Errors detected:",
-        JSON.stringify(state.errors, null, 2)
-      );
-      if (state.errors._form) {
-        console.error("❌ [CLIENT] Form errors:", state.errors._form);
-      }
-      // Log all error keys
-      Object.keys(state.errors).forEach((key) => {
-        if (key !== "_form") {
-          console.error(
-            `❌ [CLIENT] Field error [${key}]:`,
-            state.errors![key]
-          );
-        }
-      });
-    }
-  }, [state, pending]);
-
   // Close modal on successful creation
   useEffect(() => {
     if (state?.message && !pending) {

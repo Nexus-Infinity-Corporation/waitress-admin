@@ -85,7 +85,7 @@ export async function getAdministrators(): Promise<Administrator[]> {
         .in("id", adminIds);
 
       // Fetch roles data if there are role IDs
-      let rolesData: Role[] = [];
+      let rolesData: Pick<Role, "id" | "name" | "display_name">[] = [];
       if (roleIds.length > 0) {
         const { data: fetchedRoles, error: rolesError } = await client
           .from("roles")
