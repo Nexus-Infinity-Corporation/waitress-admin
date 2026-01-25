@@ -89,7 +89,6 @@ export const getRoleForCurrentUser = async (): Promise<Role | null> => {
     }
 
     // Get the role by ID (role_id is the ID in the roles table, not the level)
-    // First try to get active role
     const roleData = await readFromSupabase<Role>(
       async (client) => {
         const { data, error } = await client
@@ -109,41 +108,12 @@ export const getRoleForCurrentUser = async (): Promise<Role | null> => {
       { retries: 1 }
     );
 
-    // If not found with is_active filter, check if role exists but is inactive
     if (!roleData) {
-      const inactiveRole = await readFromSupabase<Role>(
-        async (client) => {
-          const { data, error } = await client
-            .from("roles")
-            .select("*")
-            .eq("id", adminData.role_id!)
-            .maybeSingle();
-
-          // PGRST116 = no rows found
-          if (error && error.code !== "PGRST116") {
-            throw error;
-          }
-
-          return { data, error: null };
-        },
-        { retries: 1 }
+      console.warn(
+        `Role with id ${adminData.role_id} not found or is inactive`
       );
-
-      if (inactiveRole) {
-        console.warn(
-          `Role with id ${adminData.role_id} exists but is inactive (is_active: ${inactiveRole.is_active})`
-        );
-        // Still return the role even if inactive, so the user can see what role they have
-        // The requireRole function will still check role_level
-        return inactiveRole;
-      } else {
-        console.error(
-          `Role with id ${adminData.role_id} does not exist in the roles table`
-        );
-        return null;
-      }
+      return null;
     }
-
     return roleData;
   } catch (error) {
     console.error("Error in getRoleForCurrentUser:", error);
