@@ -14,6 +14,8 @@ import { getRestaurantMetrics } from "./dashboard/services/dashboard.service";
 import { getTranslations } from "next-intl/server";
 import { requireAuth } from "@/lib/auth";
 import { DashboardSkeleton } from "@/components/dashboard/dashboard-skeleton";
+import { NavigationClient } from "@/components/dashboard/navigation-client";
+import { getNavigationItems } from "@/services/navigation.service";
 
 const iconMap: Record<string, LucideIcon> = {
   green: Users,
@@ -123,15 +125,19 @@ async function DashboardContent() {
 export default async function Dashboard() {
   // Ensure user is authenticated (fallback check)
   await requireAuth("/");
+  const navItems = await getNavigationItems();
 
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-background">
       <HorizontalHeader />
-      <main className="flex-1 overflow-y-auto p-6 animate-in fade-in duration-1000">
-        <div className="mx-auto max-w-7xl space-y-6">
-          <Suspense fallback={<DashboardSkeleton />}>
-            <DashboardContent />
-          </Suspense>
+      <main className="flex flex-1 flex-row overflow-hidden">
+        <NavigationClient items={navItems} />
+        <div className="flex-1 overflow-y-auto p-6 animate-in fade-in duration-1000">
+          <div className="mx-auto max-w-7xl space-y-6">
+            <Suspense fallback={<DashboardSkeleton />}>
+              <DashboardContent />
+            </Suspense>
+          </div>
         </div>
       </main>
     </div>
