@@ -8,7 +8,6 @@ export async function HorizontalHeader() {
   return (
     <div className="flex flex-col border-b border-border bg-card">
       <HeaderClient />
-      <NavigationClient items={navItems} />
     </div>
   );
 }

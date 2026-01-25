@@ -28,7 +28,7 @@ export function HeaderClient() {
           A
         </div>
         <span className="text-xl font-bold transition-colors duration-1000 ease-in-out">
-          Amdash
+          Waitress Admin
         </span>
       </div>
 
