@@ -33,7 +33,6 @@ export function ModalAdministrator({
   // Close modal on successful creation
   useEffect(() => {
     if (state?.message && !pending) {
-      console.log("✅ [CLIENT] Success detected, closing modal...");
       startTransition(() => {
         setTimeout(() => {
           onOpenChange(false);
@@ -45,22 +44,7 @@ export function ModalAdministrator({
   }, [state?.message, pending, onOpenChange]);
 
   const handleSubmit = (formData: FormData) => {
-    console.log(
-      "🔄 [CLIENT] Form submitted, starting administrator creation..."
-    );
-    console.log("🔄 [CLIENT] Form data:", {
-      firstName: formData.get("firstName"),
-      lastName: formData.get("lastName"),
-      email: formData.get("email"),
-      phone: formData.get("phone"),
-      role: formData.get("role"),
-      password: formData.get("password") ? "***" : "missing",
-    });
-    console.log("🔄 [CLIENT] Current state before submission:", state);
-    console.log("🔄 [CLIENT] Pending state:", pending);
-
     startTransition(() => {
-      console.log("🔄 [CLIENT] Inside startTransition, calling formAction...");
       createAdministratorAction(formData);
     });
   };

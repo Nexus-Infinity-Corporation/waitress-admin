@@ -243,6 +243,9 @@ export async function createUser(
     }
   } else {
     // Fallback to regular signUp (requires email confirmation unless disabled in Supabase settings)
+    console.error(
+      "Step 1 FAILED: Auth user creation error: No service role key found"
+    );
     const { data: authData, error: signUpError } = await supabase.auth.signUp({
       email,
       password,
