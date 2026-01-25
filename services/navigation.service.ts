@@ -10,6 +10,6 @@ export async function getNavigationItems(): Promise<NavigationItem[]> {
     { title: "Products", href: "/products", icon: "Package" },
     { title: "Warehouse", href: "/warehouse", icon: "Warehouse" },
     { title: "Orders", href: "/orders", icon: "ShoppingCart" },
-    { title: "Analytics", href: "/analytics", icon: "BarChart3" },
+    // { title: "Analytics", href: "/analytics", icon: "BarChart3" },
   ];
 }
