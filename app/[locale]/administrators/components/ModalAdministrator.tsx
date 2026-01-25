@@ -34,11 +34,9 @@ export function ModalAdministrator({
   useEffect(() => {
     if (state?.message && !pending) {
       startTransition(() => {
-        setTimeout(() => {
-          onOpenChange(false);
-          // Reset form by reloading or using router.refresh()
-          window.location.reload();
-        }, 1000);
+        onOpenChange(false);
+        // Reset form by reloading or using router.refresh()
+        // window.location.reload();
       });
     }
   }, [state?.message, pending, onOpenChange]);
