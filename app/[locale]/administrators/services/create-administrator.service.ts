@@ -120,8 +120,6 @@ export async function createAdministratorAction(
     // ============================================
     // STEP 2.5: Check if administrator record already exists
     // ============================================
-    console.log("Step 2.5: Checking if administrator record already exists...");
-
     try {
       const existingAdmin = await getAdministratorByUserId(finalUserId);
 
@@ -187,7 +185,7 @@ export async function createAdministratorAction(
 
       // Verify the record was actually inserted by fetching it
       try {
-        const verifyData = await adminOperation(async (client) => {
+        await adminOperation(async (client) => {
           const { data: verify, error: verifyError } = await client
             .from("administrators")
             .select("*")

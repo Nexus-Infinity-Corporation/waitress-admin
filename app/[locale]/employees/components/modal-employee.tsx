@@ -6,8 +6,10 @@ import {
   useEffect,
   useMemo,
   useState,
+  useRef,
 } from "react";
 import { createEmployeeAction } from "../services/create-employee.service";
+import { useCheckEmail } from "../hooks/useCheckEmail";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,7 +21,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Loader2, Eye, EyeOff } from "lucide-react";
+import {
+  Loader2,
+  Eye,
+  EyeOff,
+  Mail,
+  CheckCircle2,
+  UserPlus,
+} from "lucide-react";
 import type {
   BusinessOption,
   BranchOption,
@@ -49,6 +58,14 @@ export function CreateEmployeeModal({
   );
   const [showPassword, setShowPassword] = useState(false);
   const [selectedBusinessId, setSelectedBusinessId] = useState<string>("");
+  const emailInputRef = useRef<HTMLInputElement>(null);
+
+  // Use the custom hook for email checking
+  const {
+    status: emailStatus,
+    checkEmail,
+    reset: resetEmailCheck,
+  } = useCheckEmail();
 
   // Filter branches based on selected business (derived state)
   const filteredBranches = useMemo(() => {
@@ -59,6 +76,13 @@ export function CreateEmployeeModal({
     }
     return branches;
   }, [selectedBusinessId, branches]);
+
+  // Reset email check when modal closes
+  useEffect(() => {
+    if (!open) {
+      resetEmailCheck();
+    }
+  }, [open, resetEmailCheck]);
 
   // Close modal on successful creation
   useEffect(() => {
@@ -72,6 +96,12 @@ export function CreateEmployeeModal({
       });
     }
   }, [state?.message, pending, onOpenChange]);
+
+  // Handle email check button click
+  const handleCheckEmail = () => {
+    const email = emailInputRef.current?.value || "";
+    checkEmail(email);
+  };
 
   const handleSubmit = (formData: FormData) => {
     startTransition(() => formAction(formData));
@@ -92,7 +122,90 @@ export function CreateEmployeeModal({
           {/* Personal Information Section */}
           <div className="space-y-4">
             <h3 className="text-sm font-semibold">Personal Information</h3>
-
+            <div className="space-y-2">
+              <Label htmlFor="email">
+                Email <span className="text-destructive">*</span>
+              </Label>
+              <div className="flex items-center gap-2">
+                <Input
+                  ref={emailInputRef}
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="john.doe@example.com"
+                  required
+                  disabled={pending}
+                  aria-invalid={state?.errors?.email ? "true" : "false"}
+                  aria-describedby={
+                    state?.errors?.email ? "email-error" : undefined
+                  }
+                  onChange={() => {
+                    // Reset status when email changes
+                    if (emailStatus !== "idle") {
+                      resetEmailCheck();
+                    }
+                  }}
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleCheckEmail}
+                  disabled={pending || emailStatus === "checking"}
+                  className={
+                    emailStatus === "exists"
+                      ? "text-green-500 border-green-500"
+                      : emailStatus === "new"
+                        ? "text-blue-500 border-blue-500"
+                        : ""
+                  }
+                >
+                  {emailStatus === "checking" && (
+                    <>
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                      Checking...
+                    </>
+                  )}
+                  {emailStatus === "exists" && (
+                    <>
+                      <CheckCircle2 className="h-4 w-4 mr-2" />
+                      Email Checked
+                    </>
+                  )}
+                  {emailStatus === "new" && (
+                    <>
+                      <UserPlus className="h-4 w-4 mr-2" />
+                      New Email
+                    </>
+                  )}
+                  {emailStatus === "idle" && (
+                    <>
+                      <Mail className="h-4 w-4 mr-2" />
+                      Check Email
+                    </>
+                  )}
+                </Button>
+              </div>
+              {emailStatus === "exists" && (
+                <p className="text-sm text-green-600 dark:text-green-400">
+                  This email is already registered. User will be assigned as
+                  employee.
+                </p>
+              )}
+              {emailStatus === "new" && (
+                <p className="text-sm text-blue-600 dark:text-blue-400">
+                  This is a new email. A new user account will be created.
+                </p>
+              )}
+              {state?.errors?.email && (
+                <p
+                  id="email-error"
+                  className="text-sm text-destructive"
+                  role="alert"
+                >
+                  {state.errors.email[0]}
+                </p>
+              )}
+            </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="firstName">
@@ -136,33 +249,6 @@ export function CreateEmployeeModal({
                   </p>
                 )}
               </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="email">
-                Email <span className="text-destructive">*</span>
-              </Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="john.doe@example.com"
-                required
-                disabled={pending}
-                aria-invalid={state?.errors?.email ? "true" : "false"}
-                aria-describedby={
-                  state?.errors?.email ? "email-error" : undefined
-                }
-              />
-              {state?.errors?.email && (
-                <p
-                  id="email-error"
-                  className="text-sm text-destructive"
-                  role="alert"
-                >
-                  {state.errors.email[0]}
-                </p>
-              )}
             </div>
 
             <div className="grid grid-cols-2 gap-4">
