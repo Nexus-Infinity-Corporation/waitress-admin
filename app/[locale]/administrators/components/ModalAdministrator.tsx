@@ -19,11 +19,13 @@ import { useCreateAdministrator } from "@/app/[locale]/administrators/hooks/useC
 interface ModalAdministratorProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  currentUserRoleLevel: number | null;
 }
 
 export function ModalAdministrator({
   open,
   onOpenChange,
+  currentUserRoleLevel,
 }: ModalAdministratorProps) {
   const { state, createAdministratorAction, pending } =
     useCreateAdministrator();
@@ -162,9 +164,12 @@ export function ModalAdministrator({
                   className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-1000 ease-in-out focus:scale-[1.02] focus:shadow-md"
                   disabled={pending}
                 >
-                  <option value="administrator">Administrator</option>
-                  <option value="brand_owner">Brand Owner</option>
-                  <option value="super_admin">Super Admin</option>
+                  <option value="11">Brand Administrator</option>
+                  <option value="10">Branch Manager</option>
+                  <option value="9">Supervisor</option>
+                  {currentUserRoleLevel && currentUserRoleLevel >= 12 && (
+                    <option value="12">Super Admin</option>
+                  )}
                 </select>
                 {state?.errors?.role && (
                   <p className="text-sm text-destructive" role="alert">

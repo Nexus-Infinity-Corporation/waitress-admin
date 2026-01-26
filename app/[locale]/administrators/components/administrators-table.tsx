@@ -5,13 +5,28 @@ import { DataTable, type ColumnDef } from "@/components/data-table";
 import { Badge } from "@/components/ui/badge";
 import { Administrator } from "@/app/[locale]/administrators/types/administrator";
 import { ModalAdministrator } from "./ModalAdministrator";
+import { ModalDelete } from "@/components/generic-modals/modal-delete";
+import { useDeleteAdministrator } from "../hooks/useDeleteAdministrator";
 
 interface AdministratorsTableProps {
   data: Administrator[];
+  currentUserRoleLevel: number | null;
 }
 
-export function AdministratorsTable({ data }: AdministratorsTableProps) {
+export function AdministratorsTable({
+  data,
+  currentUserRoleLevel,
+}: AdministratorsTableProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
+
+  const {
+    openDeleteModal,
+    setOpenDeleteModal,
+    openDeleteConfirmation,
+    deleteAdministrator,
+    pending: isDeleting,
+  } = useDeleteAdministrator();
 
   const columns: ColumnDef<Administrator>[] = [
     {
@@ -70,10 +85,21 @@ export function AdministratorsTable({ data }: AdministratorsTableProps) {
         searchKey="name"
         searchPlaceholder="Search administrators and brand owners..."
         onAdd={() => setIsModalOpen(true)}
-        onEdit={(administrator) => console.log("Edit", administrator)}
-        onDelete={(administrator) => console.log("Delete", administrator)}
+        onEdit={() => setOpenEditModal(true)}
+        onDelete={(administrator) => openDeleteConfirmation(administrator.id)}
       />
-      <ModalAdministrator open={isModalOpen} onOpenChange={setIsModalOpen} />
+      <ModalAdministrator
+        open={isModalOpen}
+        onOpenChange={setIsModalOpen}
+        currentUserRoleLevel={currentUserRoleLevel}
+      />
+      <ModalDelete
+        open={openDeleteModal}
+        onOpenChange={setOpenDeleteModal}
+        onDelete={deleteAdministrator}
+        isDeleting={isDeleting}
+        title="Delete Administrator"
+      />
     </>
   );
 }

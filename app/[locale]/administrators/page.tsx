@@ -11,11 +11,14 @@ export const revalidate = 3600;
 export default async function AdministratorPage() {
   // Check if user has required role level (>= 9 for administrators)
   // This will redirect to dashboard if user doesn't have sufficient permissions
-  await requireRole(9, "/dashboard");
+  // Also returns the current user's role
+  const currentUserRole = await requireRole(9, "/dashboard");
 
-  // Authentication is handled by middleware (proxy.ts)
-  const administrators = await getAdministrators();
-  const navItems = await getNavigationItems();
+  // Fetch data in parallel after auth check
+  const [administrators, navItems] = await Promise.all([
+    getAdministrators(),
+    getNavigationItems(),
+  ]);
 
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-background">
@@ -25,7 +28,10 @@ export default async function AdministratorPage() {
         <div className="flex-1 overflow-y-auto p-6 animate-in fade-in duration-1000">
           <div className="mx-auto max-w-7xl">
             <div className="animate-in fade-in slide-in-from-bottom-4 duration-1000 ease-in-out">
-              <AdministratorsTable data={administrators} />
+              <AdministratorsTable
+                data={administrators}
+                currentUserRoleLevel={currentUserRole?.role_level ?? null}
+              />
             </div>
           </div>
         </div>
