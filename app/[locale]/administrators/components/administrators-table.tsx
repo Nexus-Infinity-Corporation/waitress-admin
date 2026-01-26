@@ -4,7 +4,7 @@ import { useState } from "react";
 import { DataTable, type ColumnDef } from "@/components/data-table";
 import { Badge } from "@/components/ui/badge";
 import { Administrator } from "@/app/[locale]/administrators/types/administrator";
-import { ModalAdministrator } from "./ModalAdministrator";
+import { ModalAdministrator } from "./modal-administrator";
 import { ModalDelete } from "@/components/generic-modals/modal-delete";
 import { useDeleteAdministrator } from "../hooks/useDeleteAdministrator";
 

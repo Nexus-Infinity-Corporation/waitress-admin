@@ -11,7 +11,6 @@ export const revalidate = 3600;
 export default async function AdministratorPage() {
   // Check if user has required role level (>= 9 for administrators)
   // This will redirect to dashboard if user doesn't have sufficient permissions
-  // Also returns the current user's role
   const currentUserRole = await requireRole(9, "/dashboard");
 
   // Fetch data in parallel after auth check
