@@ -75,44 +75,23 @@ export async function createEmployeeAction(
 
     const finalUserId = userResult.userId;
 
-    // Step 3: Create employee_role if role or position is provided
-    if (role || position || businessId || branchId) {
-      const { error: roleError } = await supabase
-        .from("employee_roles")
-        .insert({
-          user_id: finalUserId,
-          role: (role as "staff" | "admin" | "regular") || null,
-          position: position || null,
-          business_id: businessId || null,
-          branch_id: branchId || null,
-          is_active: true,
-        });
+    // Step 2: Create employee record with role_id
+    const roleId = role ? Number(role) : null;
 
-      if (roleError) {
-        console.error("Error creating employee role:", roleError);
-        // Don't fail the entire operation if role creation fails
-        // The user is still created, just without role assignment
-      }
+    const { error: employeeError } = await supabase.from("employees").insert({
+      user_id: finalUserId,
+      role_id: roleId,
+      username: username || null,
+      is_active: true,
+    });
+
+    if (employeeError) {
+      console.error("Error creating employee:", employeeError);
+      // Don't fail the entire operation if employee creation fails
     }
 
-    // Step 4: Create employee_assignment if hourlyRate or other assignment data is provided
-    if (hourlyRate || businessId || branchId) {
-      // Get role_id if we need to link to a role
-      let roleId: number | null = null;
-      if (role || position) {
-        // Try to find existing role or create one
-        const { data: existingRole } = await supabase
-          .from("roles")
-          .select("id")
-          .eq("business_id", businessId || "")
-          .eq("name", role || position || "")
-          .single();
-
-        if (existingRole) {
-          roleId = existingRole.id;
-        }
-      }
-
+    // Step 3: Create employee_assignment if hourlyRate, businessId, branchId, or role is provided
+    if (hourlyRate || businessId || branchId || roleId) {
       const { error: assignmentError } = await supabase
         .from("employee_assignments")
         .insert({

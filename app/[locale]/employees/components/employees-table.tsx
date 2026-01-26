@@ -10,17 +10,20 @@ import type {
   BranchOption,
 } from "@/app/[locale]/employees/services/employee-form-data.service";
 import { useEmployeeCreate } from "../hooks/useEmployeeCreate";
+import { Role } from "@/types/roles";
 
 interface EmployeesTableProps {
   data: Employee[];
   businesses?: BusinessOption[];
   branches?: BranchOption[];
+  roles?: Role[];
 }
 
 export function EmployeesTable({
   data,
   businesses = [],
   branches = [],
+  roles = [],
 }: EmployeesTableProps) {
   const { setOpenCreateModal, openCreateModal } = useEmployeeCreate();
 

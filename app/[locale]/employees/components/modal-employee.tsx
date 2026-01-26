@@ -10,6 +10,7 @@ import {
 } from "react";
 import { createEmployeeAction } from "../services/create-employee.service";
 import { useCheckEmail } from "../hooks/useCheckEmail";
+import { useGetRoles } from "@/app/hooks/useGetRoles";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -70,6 +71,9 @@ export function CreateEmployeeModal({
     checkEmail,
     reset: resetEmailCheck,
   } = useCheckEmail();
+
+  // Fetch roles from Supabase
+  const { roles, loading: rolesLoading } = useGetRoles();
 
   // Filter branches based on selected business (derived state)
   const filteredBranches = useMemo(() => {
@@ -338,55 +342,6 @@ export function CreateEmployeeModal({
                 </div>
               </div>
             )}
-
-            {/* Show password only after email check confirms new user */}
-            {emailStatus === "new" && (
-              <div className="space-y-2">
-                <Label htmlFor="password">
-                  Password <span className="text-destructive">*</span>
-                </Label>
-                <div className="relative">
-                  <Input
-                    id="password"
-                    name="password"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Enter password"
-                    required
-                    disabled={pending}
-                    aria-invalid={state?.errors?.password ? "true" : "false"}
-                    aria-describedby={
-                      state?.errors?.password ? "password-error" : undefined
-                    }
-                    className="pr-10"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors duration-1000 ease-in-out"
-                    disabled={pending}
-                    aria-label={
-                      showPassword ? "Hide password" : "Show password"
-                    }
-                  >
-                    {showPassword ? (
-                      <EyeOff className="h-4 w-4" />
-                    ) : (
-                      <Eye className="h-4 w-4" />
-                    )}
-                  </button>
-                </div>
-                {state?.errors?.password && (
-                  <p
-                    id="password-error"
-                    className="text-sm text-destructive"
-                    role="alert"
-                  >
-                    {state.errors.password[0]}
-                  </p>
-                )}
-              </div>
-            )}
-
             {/* Show address and age only after email check confirms new user */}
             {emailStatus === "new" && (
               <div className="grid grid-cols-2 gap-4">
@@ -439,12 +394,14 @@ export function CreateEmployeeModal({
                   id="role"
                   name="role"
                   className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                  disabled={pending}
+                  disabled={pending || rolesLoading}
                 >
                   <option value="">Select role</option>
-                  <option value="staff">Staff</option>
-                  <option value="admin">Admin</option>
-                  <option value="regular">Regular</option>
+                  {roles.map((role) => (
+                    <option key={role.id} value={role.id.toString()}>
+                      {role.display_name || role.name}
+                    </option>
+                  ))}
                 </select>
                 {state?.errors?.role && (
                   <p className="text-sm text-destructive" role="alert">

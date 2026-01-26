@@ -39,7 +39,13 @@ export const createEmployeeSchema = z.object({
     .trim()
     .min(1, { message: "Password is required" })
     .min(6, { message: "Password must be at least 6 characters" }),
-  role: z.string().trim().optional(),
+  role: z
+    .string()
+    .optional()
+    .transform((val: string | undefined) =>
+      val && val !== "" ? parseInt(val, 10) : undefined
+    )
+    .pipe(z.number().int().positive().optional()),
   position: z
     .string()
     .trim()

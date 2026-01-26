@@ -16,7 +16,46 @@ export const getHighestRoleLevelRoles = async (): Promise<Role[]> => {
     console.error("Error fetching roles:", error);
     return [];
   }
+  console.log("Highest role level roles:", data);
+  return data || [];
+};
 
+export const getAllRoles = async (): Promise<Role[]> => {
+  const data = await readFromSupabase<Role[]>(
+    async (client) => {
+      const { data: rolesData, error } = await client
+        .from("roles")
+        .select("*")
+        .eq("is_active", true)
+        .order("role_level", { ascending: true });
+
+      if (error) {
+        throw error;
+      }
+
+      return { data: rolesData, error: null };
+    },
+    { retries: 3 }
+  );
+
+  console.log("All roles:", data);
+  return data || [];
+};
+
+export const getLimitedRoles = async (level_limit: number): Promise<Role[]> => {
+  const { data, error } = await supabase
+    .from("roles")
+    .select("*")
+    .eq("is_active", true)
+    .gte("role_level", 1)
+    .lte("role_level", level_limit)
+    .order("role_level", { ascending: true });
+
+  if (error) {
+    console.error("Error fetching roles:", error);
+    return [];
+  }
+  console.log("Limited roles:", data);
   return data || [];
 };
 
