@@ -28,6 +28,8 @@ import {
   Mail,
   CheckCircle2,
   UserPlus,
+  UserCheck,
+  AlertTriangle,
 } from "lucide-react";
 import type {
   BusinessOption,
@@ -63,6 +65,8 @@ export function CreateEmployeeModal({
   // Use the custom hook for email checking
   const {
     status: emailStatus,
+    isActive: userIsActive,
+    userName: existingUserName,
     checkEmail,
     reset: resetEmailCheck,
   } = useCheckEmail();
@@ -152,11 +156,13 @@ export function CreateEmployeeModal({
                   onClick={handleCheckEmail}
                   disabled={pending || emailStatus === "checking"}
                   className={
-                    emailStatus === "exists"
-                      ? "text-green-500 border-green-500"
-                      : emailStatus === "new"
-                        ? "text-blue-500 border-blue-500"
-                        : ""
+                    emailStatus === "exists" && userIsActive
+                      ? "text-green-500 border-green-500 hover:bg-green-50 dark:hover:bg-green-950"
+                      : emailStatus === "exists" && !userIsActive
+                        ? "text-amber-500 border-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950"
+                        : emailStatus === "new"
+                          ? "text-blue-500 border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950"
+                          : ""
                   }
                 >
                   {emailStatus === "checking" && (
@@ -165,10 +171,16 @@ export function CreateEmployeeModal({
                       Checking...
                     </>
                   )}
-                  {emailStatus === "exists" && (
+                  {emailStatus === "exists" && userIsActive && (
                     <>
-                      <CheckCircle2 className="h-4 w-4 mr-2" />
-                      Email Checked
+                      <UserCheck className="h-4 w-4 mr-2" />
+                      User Found
+                    </>
+                  )}
+                  {emailStatus === "exists" && !userIsActive && (
+                    <>
+                      <AlertTriangle className="h-4 w-4 mr-2" />
+                      User Inactive
                     </>
                   )}
                   {emailStatus === "new" && (
@@ -185,16 +197,51 @@ export function CreateEmployeeModal({
                   )}
                 </Button>
               </div>
-              {emailStatus === "exists" && (
-                <p className="text-sm text-green-600 dark:text-green-400">
-                  This email is already registered. User will be assigned as
-                  employee.
-                </p>
+              {/* Status messages */}
+              {emailStatus === "exists" && userIsActive && (
+                <div className="rounded-md bg-green-50 dark:bg-green-950/50 p-3 border border-green-200 dark:border-green-800">
+                  <div className="flex items-start gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
+                    <div className="text-sm text-green-700 dark:text-green-300">
+                      <p className="font-medium">
+                        User found
+                        {existingUserName ? `: ${existingUserName}` : ""}
+                      </p>
+                      <p className="text-green-600 dark:text-green-400">
+                        This user will be assigned as an employee.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+              {emailStatus === "exists" && !userIsActive && (
+                <div className="rounded-md bg-amber-50 dark:bg-amber-950/50 p-3 border border-amber-200 dark:border-amber-800">
+                  <div className="flex items-start gap-2">
+                    <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
+                    <div className="text-sm text-amber-700 dark:text-amber-300">
+                      <p className="font-medium">
+                        Inactive user found
+                        {existingUserName ? `: ${existingUserName}` : ""}
+                      </p>
+                      <p className="text-amber-600 dark:text-amber-400">
+                        This user will be activated and assigned as an employee.
+                      </p>
+                    </div>
+                  </div>
+                </div>
               )}
               {emailStatus === "new" && (
-                <p className="text-sm text-blue-600 dark:text-blue-400">
-                  This is a new email. A new user account will be created.
-                </p>
+                <div className="rounded-md bg-blue-50 dark:bg-blue-950/50 p-3 border border-blue-200 dark:border-blue-800">
+                  <div className="flex items-start gap-2">
+                    <UserPlus className="h-4 w-4 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
+                    <div className="text-sm text-blue-700 dark:text-blue-300">
+                      <p className="font-medium">New email address</p>
+                      <p className="text-blue-600 dark:text-blue-400">
+                        A new user account will be created.
+                      </p>
+                    </div>
+                  </div>
+                </div>
               )}
               {state?.errors?.email && (
                 <p
