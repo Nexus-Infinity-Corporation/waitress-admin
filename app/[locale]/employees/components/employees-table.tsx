@@ -4,12 +4,26 @@ import { DataTable, type ColumnDef } from "@/components/data-table";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import type { Employee } from "@/shared/types/restaurant";
+import { CreateEmployeeModal } from "./modal-employee";
+import type {
+  BusinessOption,
+  BranchOption,
+} from "@/app/[locale]/employees/services/employee-form-data.service";
+import { useEmployeeCreate } from "../hooks/useEmployeeCreate";
 
 interface EmployeesTableProps {
   data: Employee[];
+  businesses?: BusinessOption[];
+  branches?: BranchOption[];
 }
 
-export function EmployeesTable({ data }: EmployeesTableProps) {
+export function EmployeesTable({
+  data,
+  businesses = [],
+  branches = [],
+}: EmployeesTableProps) {
+  const { setOpenCreateModal, openCreateModal } = useEmployeeCreate();
+
   const columns: ColumnDef<Employee>[] = [
     {
       key: "name",
@@ -68,15 +82,23 @@ export function EmployeesTable({ data }: EmployeesTableProps) {
   ];
 
   return (
-    <DataTable
-      title="Employees"
-      data={data}
-      columns={columns}
-      searchKey="name"
-      searchPlaceholder="Search employees..."
-      onAdd={() => console.log("Add employee")}
-      onEdit={(employee) => console.log("Edit", employee)}
-      onDelete={(employee) => console.log("Delete", employee)}
-    />
+    <>
+      <DataTable
+        title="Employees"
+        data={data}
+        columns={columns}
+        searchKey="name"
+        searchPlaceholder="Search employees..."
+        onAdd={() => setOpenCreateModal(true)}
+        onEdit={(employee) => console.log("Edit", employee)}
+        onDelete={(employee) => console.log("Delete", employee)}
+      />
+      <CreateEmployeeModal
+        open={openCreateModal}
+        onOpenChange={setOpenCreateModal}
+        businesses={businesses}
+        branches={branches}
+      />
+    </>
   );
 }

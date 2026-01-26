@@ -11,13 +11,17 @@ import { EmployeesTableSkeleton } from "@/components/dashboard/employees-table-s
 import { getNavigationItems } from "@/services/navigation.service";
 
 async function EmployeesTableWrapper() {
-  const employees = await getCachedEmployees();
+  const [employees, businesses, branches] = await Promise.all([
+    getCachedEmployees(),
+    getBusinesses(),
+    getBranches(),
+  ]);
 
   return (
     <EmployeesTable
       data={employees}
-      // businesses={businesses}
-      // branches={branches}
+      businesses={businesses}
+      branches={branches}
     />
   );
 }
