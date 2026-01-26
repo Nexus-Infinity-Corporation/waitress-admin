@@ -253,165 +253,179 @@ export function CreateEmployeeModal({
                 </p>
               )}
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            {/* Show name fields only after email check confirms new user */}
+            {emailStatus === "new" && (
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="firstName">
+                    First Name <span className="text-destructive">*</span>
+                  </Label>
+                  <Input
+                    id="firstName"
+                    name="firstName"
+                    placeholder="John"
+                    required
+                    disabled={pending}
+                    aria-invalid={state?.errors?.firstName ? "true" : "false"}
+                    aria-describedby={
+                      state?.errors?.firstName ? "firstName-error" : undefined
+                    }
+                    className="transition-all duration-1000 ease-in-out focus:scale-[1.02] focus:shadow-md"
+                  />
+                  {state?.errors?.firstName && (
+                    <p
+                      id="firstName-error"
+                      className="text-sm text-destructive"
+                      role="alert"
+                    >
+                      {state.errors.firstName[0]}
+                    </p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="lastName">Last Name</Label>
+                  <Input
+                    id="lastName"
+                    name="lastName"
+                    placeholder="Doe"
+                    disabled={pending}
+                    aria-invalid={state?.errors?.lastName ? "true" : "false"}
+                  />
+                  {state?.errors?.lastName && (
+                    <p className="text-sm text-destructive" role="alert">
+                      {state.errors.lastName[0]}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Show phone only for new users */}
+            {emailStatus === "new" && (
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="phone">Phone</Label>
+                  <Input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    placeholder="+1 234-567-8900"
+                    disabled={pending}
+                    aria-invalid={state?.errors?.phone ? "true" : "false"}
+                  />
+                  {state?.errors?.phone && (
+                    <p className="text-sm text-destructive" role="alert">
+                      {state.errors.phone[0]}
+                    </p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="username">Username</Label>
+                  <Input
+                    id="username"
+                    name="username"
+                    placeholder="johndoe"
+                    disabled={pending}
+                    aria-invalid={state?.errors?.username ? "true" : "false"}
+                  />
+                  {state?.errors?.username && (
+                    <p className="text-sm text-destructive" role="alert">
+                      {state.errors.username[0]}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Show password only after email check confirms new user */}
+            {emailStatus === "new" && (
               <div className="space-y-2">
-                <Label htmlFor="firstName">
-                  First Name <span className="text-destructive">*</span>
+                <Label htmlFor="password">
+                  Password <span className="text-destructive">*</span>
                 </Label>
-                <Input
-                  id="firstName"
-                  name="firstName"
-                  placeholder="John"
-                  required
-                  disabled={pending}
-                  aria-invalid={state?.errors?.firstName ? "true" : "false"}
-                  aria-describedby={
-                    state?.errors?.firstName ? "firstName-error" : undefined
-                  }
-                  className="transition-all duration-1000 ease-in-out focus:scale-[1.02] focus:shadow-md"
-                />
-                {state?.errors?.firstName && (
+                <div className="relative">
+                  <Input
+                    id="password"
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Enter password"
+                    required
+                    disabled={pending}
+                    aria-invalid={state?.errors?.password ? "true" : "false"}
+                    aria-describedby={
+                      state?.errors?.password ? "password-error" : undefined
+                    }
+                    className="pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors duration-1000 ease-in-out"
+                    disabled={pending}
+                    aria-label={
+                      showPassword ? "Hide password" : "Show password"
+                    }
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </button>
+                </div>
+                {state?.errors?.password && (
                   <p
-                    id="firstName-error"
+                    id="password-error"
                     className="text-sm text-destructive"
                     role="alert"
                   >
-                    {state.errors.firstName[0]}
+                    {state.errors.password[0]}
                   </p>
                 )}
               </div>
+            )}
 
-              <div className="space-y-2">
-                <Label htmlFor="lastName">Last Name</Label>
-                <Input
-                  id="lastName"
-                  name="lastName"
-                  placeholder="Doe"
-                  disabled={pending}
-                  aria-invalid={state?.errors?.lastName ? "true" : "false"}
-                />
-                {state?.errors?.lastName && (
-                  <p className="text-sm text-destructive" role="alert">
-                    {state.errors.lastName[0]}
-                  </p>
-                )}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="phone">Phone</Label>
-                <Input
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  placeholder="+1 234-567-8900"
-                  disabled={pending}
-                  aria-invalid={state?.errors?.phone ? "true" : "false"}
-                />
-                {state?.errors?.phone && (
-                  <p className="text-sm text-destructive" role="alert">
-                    {state.errors.phone[0]}
-                  </p>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="username">Username</Label>
-                <Input
-                  id="username"
-                  name="username"
-                  placeholder="johndoe"
-                  disabled={pending}
-                  aria-invalid={state?.errors?.username ? "true" : "false"}
-                />
-                {state?.errors?.username && (
-                  <p className="text-sm text-destructive" role="alert">
-                    {state.errors.username[0]}
-                  </p>
-                )}
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="password">
-                Password <span className="text-destructive">*</span>
-              </Label>
-              <div className="relative">
-                <Input
-                  id="password"
-                  name="password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Enter password"
-                  required
-                  disabled={pending}
-                  aria-invalid={state?.errors?.password ? "true" : "false"}
-                  aria-describedby={
-                    state?.errors?.password ? "password-error" : undefined
-                  }
-                  className="pr-10"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors duration-1000 ease-in-out"
-                  disabled={pending}
-                  aria-label={showPassword ? "Hide password" : "Show password"}
-                >
-                  {showPassword ? (
-                    <EyeOff className="h-4 w-4" />
-                  ) : (
-                    <Eye className="h-4 w-4" />
+            {/* Show address and age only after email check confirms new user */}
+            {emailStatus === "new" && (
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="address">Address</Label>
+                  <Input
+                    id="address"
+                    name="address"
+                    placeholder="123 Main St"
+                    disabled={pending}
+                    aria-invalid={state?.errors?.address ? "true" : "false"}
+                  />
+                  {state?.errors?.address && (
+                    <p className="text-sm text-destructive" role="alert">
+                      {state.errors.address[0]}
+                    </p>
                   )}
-                </button>
-              </div>
-              {state?.errors?.password && (
-                <p
-                  id="password-error"
-                  className="text-sm text-destructive"
-                  role="alert"
-                >
-                  {state.errors.password[0]}
-                </p>
-              )}
-            </div>
+                </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="address">Address</Label>
-                <Input
-                  id="address"
-                  name="address"
-                  placeholder="123 Main St"
-                  disabled={pending}
-                  aria-invalid={state?.errors?.address ? "true" : "false"}
-                />
-                {state?.errors?.address && (
-                  <p className="text-sm text-destructive" role="alert">
-                    {state.errors.address[0]}
-                  </p>
-                )}
+                <div className="space-y-2">
+                  <Label htmlFor="age">Age</Label>
+                  <Input
+                    id="age"
+                    name="age"
+                    type="number"
+                    min="16"
+                    max="100"
+                    placeholder="25"
+                    disabled={pending}
+                    aria-invalid={state?.errors?.age ? "true" : "false"}
+                  />
+                  {state?.errors?.age && (
+                    <p className="text-sm text-destructive" role="alert">
+                      {state.errors.age[0]}
+                    </p>
+                  )}
+                </div>
               </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="age">Age</Label>
-                <Input
-                  id="age"
-                  name="age"
-                  type="number"
-                  min="16"
-                  max="100"
-                  placeholder="25"
-                  disabled={pending}
-                  aria-invalid={state?.errors?.age ? "true" : "false"}
-                />
-                {state?.errors?.age && (
-                  <p className="text-sm text-destructive" role="alert">
-                    {state.errors.age[0]}
-                  </p>
-                )}
-              </div>
-            </div>
+            )}
           </div>
 
           {/* Employment Information Section */}
